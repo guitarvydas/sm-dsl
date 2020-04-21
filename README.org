@@ -1,5 +1,6 @@
 * intro
   Simple V0 version of a state machine DSL.  See comments in test.lisp for details.
+* under development
 * use
 #+name: dsl
 #+begin_src lisp :results output
