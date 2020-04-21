@@ -3,6 +3,7 @@
 (defun transpile (infile-name outfile-name)
   ;; transpile a state description in infile
   ;; to an output file of .lisp
+(format *standard-output* "~&in state~%")  
 (format *standard-output* "~&a~%")  
   (let ((in-string (alexandria:read-file-into-string infile-name)))
 (format *standard-output* "~&b~%")  
@@ -19,3 +20,7 @@
 	  (with-open-file (f outfile-name :direction :output :if-exists :supersede :if-does-not-exist :create)
 			  (write-string result-string f))
 	  (format nil "file ~a written" outfile-name))))))
+
+(defun transpile-state (inf outf)
+  (format *standard-output* "~&in state~%")
+  (transpile inf outf))

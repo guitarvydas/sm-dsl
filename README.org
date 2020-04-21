@@ -1,9 +1,21 @@
 * intro
   Simple V0 version of a state machine DSL.  See comments in test.lisp for details.
-* build
+* use
 #+name: dsl
 #+begin_src lisp :results output
- (uiop:run-program "~/quicklisp/local-projects/rm.sh")
+  #| checks that :state-dsl/use can be loaded |#
+ (uiop:run-program "rm -rf ~/.cache/common-lisp ;
+ rm -rf ~/quicklisp/local-projects/*.fasl ;
+ rm -rf ~/quicklisp/local/projects/*~")
+ (ql:quickload :state-dsl/use)
+#+end_src
+
+* generate
+#+name: dsl
+#+begin_src lisp :results output
+ (uiop:run-program "rm -rf ~/.cache/common-lisp ;
+ rm -rf ~/quicklisp/local-projects/*.fasl ;
+ rm -rf ~/quicklisp/local/projects/*~")
  (ql:quickload :state-dsl/generate)
 #+end_src
 
@@ -13,18 +25,10 @@
  (state-dsl::generate)
 #+end_src
 
-#+name: dsl
-#+begin_src lisp :results output
-  #| checks that :state-dsl/use can be loaded |#
- (ql:quickload :state-dsl/use)
-#+end_src
-
-
-
 #+RESULTS: dsl
-: To load "state-dsl/generate":
+: To load "state-dsl/use":
 :   Load 1 ASDF system:
-:     state-dsl/generate
-: ; Loading "state-dsl/generate"
-: 
+:     state-dsl/use
+: ; Loading "state-dsl/use"
+: .
 
