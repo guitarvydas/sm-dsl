@@ -35,7 +35,7 @@
 #+name: dsl
 #+begin_src lisp :results output
   #| generates sm-dsl.lisp |#
- (sm-dsl::generate)
+ (sm-dsl::generate "SM-DSL")
 #+end_src
 
 * use
@@ -95,9 +95,9 @@
 
 * results
 #+RESULTS: dsl
-: To load "sm-dsl":
+: To load "sm-dsl/generate":
 :   Load 1 ASDF system:
-:     sm-dsl
-: ; Loading "sm-dsl"
+:     sm-dsl/generate
+: ; Loading "sm-dsl/generate"
 : 
 
