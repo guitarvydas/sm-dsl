@@ -1,35 +1,99 @@
 * intro
   Simple V0 version of a state machine DSL.  See comments in test.lisp for details.
 * under development
+* 1a. generate stacks.lisp
+#+name: dsl
+#+begin_src lisp :results output
+ (uiop:run-program "rm -rf ~/.cache/common-lisp ;
+ rm -rf ~/quicklisp/local-projects/*/*.fasl ;
+ rm -rf ~/quicklisp/local/projects/*/*~")
+ (ql:quickload :sm-dsl)
+#+end_src
+#+name: dsl
+#+begin_src lisp :results output
+ (ql:quickload :sm-dsl/root)
+#+end_src
+
+#+name: dsl
+#+begin_src lisp :results output
+  (sm-dsl::rload "generate-stacks")
+#+end_src
+
+#+name: dsl
+#+begin_src lisp :results output
+  (sm-dsl::generate-stacks sm-dsl::*root*)))
+#+end_src
+
+* 1b. generate sm-dsl.lisp
+#+name: dsl
+#+begin_src lisp :results output
+ (uiop:run-program "rm -rf ~/.cache/common-lisp ;
+ rm -rf ~/quicklisp/local-projects/*/*.fasl ;
+ rm -rf ~/quicklisp/local/projects/*/*~")
+ (ql:quickload :sm-dsl/generate)
+#+end_src
+
+#+name: dsl
+#+begin_src lisp :results output
+  #| generates sm-dsl.lisp |#
+ (sm-dsl::generate)
+#+end_src
+
 * use
 #+name: dsl
 #+begin_src lisp :results output
-  #| checks that :state-dsl/use can be loaded |#
+  #| checks that :sm-dsl/use can be loaded |#
  (uiop:run-program "rm -rf ~/.cache/common-lisp ;
  rm -rf ~/quicklisp/local-projects/*.fasl ;
  rm -rf ~/quicklisp/local/projects/*~")
- (ql:quickload :state-dsl/use)
+ (ql:quickload :sm-dsl/use)
 #+end_src
 
-* generate
+* use (development only)
 #+name: dsl
 #+begin_src lisp :results output
+  #| checks that :sm-dsl/use can be loaded |#
  (uiop:run-program "rm -rf ~/.cache/common-lisp ;
  rm -rf ~/quicklisp/local-projects/*.fasl ;
  rm -rf ~/quicklisp/local/projects/*~")
- (ql:quickload :state-dsl/generate)
+ (ql:quickload :sm-dsl/root)
 #+end_src
 
 #+name: dsl
 #+begin_src lisp :results output
-  #| generates state-dsl.lisp |#
- (state-dsl::generate)
+  #| checks that :sm-dsl/use can be loaded |#
+  #| (ql:quickload :sm-dsl/use) |#
+   (sm-dsl::rload "stacks")  #| stacks.lisp is generated above |#
 #+end_src
 
+#+name: dsl
+#+begin_src lisp :results output
+  #| checks that :sm-dsl/use can be loaded |#
+  #| (ql:quickload :sm-dsl/use) |#
+   (sm-dsl::rload "classes")
+#+end_src
+
+#+name: dsl
+#+begin_src lisp :results output
+  #| checks that :sm-dsl/use can be loaded |#
+  #| (ql:quickload :sm-dsl/use) |#
+   (sm-dsl::rload "sm-dsl")  #| sm-dsl.lisp is generated above |#
+#+end_src
+
+#+name: dsl
+#+begin_src lisp :results output
+  #| checks that :sm-dsl/use can be loaded |#
+  #| (ql:quickload :sm-dsl/use) |#
+   (sm-dsl::rload "mechanisms")
+#+end_src
+
+#+name: dsl
+#+begin_src lisp :results output
+  #| checks that :sm-dsl/use can be loaded |#
+  #| (ql:quickload :sm-dsl/use) |#
+   (sm-dsl::rload "transpile")
+#+end_src
+
+* results
 #+RESULTS: dsl
-: To load "state-dsl/use":
-:   Load 1 ASDF system:
-:     state-dsl/use
-: ; Loading "state-dsl/use"
-: .
 

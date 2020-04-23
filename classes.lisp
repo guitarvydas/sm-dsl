@@ -1,7 +1,7 @@
-(in-package :state-dsl)
+(in-package :sm-dsl)
 
-(defclass state-dsl-parser (pasm:parser)
-  ())
+(defclass sm-dsl-parser (pasm:parser)
+  ((env :accessor env :initform (make-instance 'environment))))
 
-(defmethod initially ((self state-dsl-parser) token-list)
+(defmethod initially ((self sm-dsl-parser) token-list)
   (call-next-method))

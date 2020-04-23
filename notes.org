@@ -1,0 +1,19 @@
+* statement is a kind of statementsBlock
+  statementsBlock is a :bag of statement
+
+  statementsBlock.appendable = (statement)
+
+* fundamental types
+  :bag implements appendable
+  :map implements addendable and indexable
+  xx-replaceFrom-yy : xx must be a stack, yy must have the same type as top(xx)
+
+* how did I do this?
+** I didn't figure this out in one fell swoop
+** I wrote the parser (using stuff I learned from S/SL)
+** I wrote the semantics, hung off of the parser
+** I separated semantic operations from parsing operations
+** I wrote the mechanisms in a new .lisp file
+** I was careful to consider every semantic operation - how can I break it/them down into smaller operations?
+** I noticed that I was repeating myself
+** so, I rewrote the mechanisms using Lisp macros (a subset of DSL technology)
