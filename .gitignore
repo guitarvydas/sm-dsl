@@ -5,3 +5,7 @@ junk.*
 #*
 *#
 .#*
+
+sm-dsl.lisp
+
+stacks.lisp
