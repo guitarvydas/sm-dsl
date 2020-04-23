@@ -28,6 +28,7 @@
                         :pathname "./"
                         :components ((:file "stacks") ;; generated
 				     (:file "classes")
+				     (:file "macros")
 				     (:file "sm-dsl")
 				     (:file "mechanisms")
 				     (:file "transpile" :depends-on ("classes"))))))

@@ -45,7 +45,7 @@
  (uiop:run-program "rm -rf ~/.cache/common-lisp ;
  rm -rf ~/quicklisp/local-projects/*.fasl ;
  rm -rf ~/quicklisp/local/projects/*~")
- (ql:quickload :sm-dsl/use)
+ (ql:quickload :stack-dsl/use)
 #+end_src
 
 * use (development only)
@@ -76,6 +76,13 @@
 #+begin_src lisp :results output
   #| checks that :sm-dsl/use can be loaded |#
   #| (ql:quickload :sm-dsl/use) |#
+   (load (sm-dsl::path "macros.lisp"))
+#+end_src
+
+#+name: dsl
+#+begin_src lisp :results output
+  #| checks that :sm-dsl/use can be loaded |#
+  #| (ql:quickload :sm-dsl/use) |#
    (load (sm-dsl::path "sm-dsl.lisp"))  #| sm-dsl.lisp is generated above |#
 #+end_src
 
@@ -95,9 +102,4 @@
 
 * results
 #+RESULTS: dsl
-: To load "sm-dsl/generate":
-:   Load 1 ASDF system:
-:     sm-dsl/generate
-: ; Loading "sm-dsl/generate"
-: 
 
