@@ -9,19 +9,18 @@
  rm -rf ~/quicklisp/local/projects/*/*~")
  (ql:quickload :sm-dsl)
 #+end_src
+
 #+name: dsl
 #+begin_src lisp :results output
- (ql:quickload :sm-dsl/root)
+  (load (sm-dsl::path "generate-stacks.lisp"))
+#+end_src
+#+name: dsl
+#+begin_src lisp :results output
+  (sm-dsl::generate-stacks)))
 #+end_src
 
 #+name: dsl
 #+begin_src lisp :results output
-  (sm-dsl::rload "generate-stacks")
-#+end_src
-
-#+name: dsl
-#+begin_src lisp :results output
-  (sm-dsl::generate-stacks sm-dsl::*root*)))
 #+end_src
 
 * 1b. generate sm-dsl.lisp
@@ -56,44 +55,49 @@
  (uiop:run-program "rm -rf ~/.cache/common-lisp ;
  rm -rf ~/quicklisp/local-projects/*.fasl ;
  rm -rf ~/quicklisp/local/projects/*~")
- (ql:quickload :sm-dsl/root)
+ (ql:quickload :sm-dsl)
 #+end_src
 
 #+name: dsl
 #+begin_src lisp :results output
   #| checks that :sm-dsl/use can be loaded |#
   #| (ql:quickload :sm-dsl/use) |#
-   (sm-dsl::rload "stacks")  #| stacks.lisp is generated above |#
+   (load (sm-dsl::path "stacks.lisp"))  #| stacks.lisp is generated above |#
 #+end_src
 
 #+name: dsl
 #+begin_src lisp :results output
   #| checks that :sm-dsl/use can be loaded |#
   #| (ql:quickload :sm-dsl/use) |#
-   (sm-dsl::rload "classes")
+   (load (sm-dsl::path "classes.lisp"))
 #+end_src
 
 #+name: dsl
 #+begin_src lisp :results output
   #| checks that :sm-dsl/use can be loaded |#
   #| (ql:quickload :sm-dsl/use) |#
-   (sm-dsl::rload "sm-dsl")  #| sm-dsl.lisp is generated above |#
+   (load (sm-dsl::path "sm-dsl.lisp"))  #| sm-dsl.lisp is generated above |#
 #+end_src
 
 #+name: dsl
 #+begin_src lisp :results output
   #| checks that :sm-dsl/use can be loaded |#
   #| (ql:quickload :sm-dsl/use) |#
-   (sm-dsl::rload "mechanisms")
+  (load (sm-dsl::path "mechanisms.lisp"))
 #+end_src
 
 #+name: dsl
 #+begin_src lisp :results output
   #| checks that :sm-dsl/use can be loaded |#
   #| (ql:quickload :sm-dsl/use) |#
-   (sm-dsl::rload "transpile")
+  (load (sm-dsl::path "transpile.lisp"))
 #+end_src
 
 * results
 #+RESULTS: dsl
+: To load "sm-dsl":
+:   Load 1 ASDF system:
+:     sm-dsl
+: ; Loading "sm-dsl"
+: 
 
