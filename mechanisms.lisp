@@ -9,7 +9,7 @@
   (~replace-top machineDescriptor machineDescriptor))
 
 (defmethod $machineDescriptor__SetField_pipeline_from_pipeline ((self sm-dsl-parser))
-  (~set-field machineDescriptor 'pipeline pipeline))
+  (~set-field machineDescriptor pipeline pipeline))
 
 (defmethod $machineDescriptor__SetField_initially_from_StatementsBag ((self sm-dsl-parser))
   (~set-field machineDescriptor 'initially statementsBag))

@@ -1,9 +1,9 @@
 machineDescriptor = { name initiallyDescriptor statesBlock pipeline }
 initiallyDescriptor = :bag statement
 statesBlock = :bag state
-state = { name events }
+state = { name eventsBlock }
 eventsBlock = :bag event
-event = { onName statementBlock }
+event = { onName statementsBlock }
 onName = :string
 
 statementsBlock = :bag statement
