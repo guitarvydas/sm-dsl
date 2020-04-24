@@ -1,20 +1,24 @@
-machineDescriptor = { name initiallyDescriptor states pipeline }
+machineDescriptor = { name initiallyDescriptor statesBlock pipeline }
 initiallyDescriptor = :bag statement
 statesBlock = :bag state
 state = { name events }
 eventsBlock = :bag event
-event = { onName statements }
+event = { onName statementBlock }
 onName = :string
 
 statementsBlock = :bag statement
 statement = | sendStatement | callStatement
-sendStatement = { kind='send' expr }
-callStatement = { kind='call' exprmap }
-exprBlock = :map expr
+sendStatement = { callkind='send' expr }
+callStatement = { callkind='call' exprmap }
+exprMap = :map expr
 expr = | rawExpr | dollarExpr | callExpr
-dollarExpr = { kind='dollar' }
-callExpr = { kind='function' argmap }
-rawExpr = { kind='raw' rawText }
+dollarExpr = { exprkind='dollar' name }
+callExpr = { exprkind='function' exprMap }
+rawExpr = { exprkind='raw' rawText }
 rawText = :string
 name = :string
 
+pipeline = :map name
+
+callkind = 'send' | 'call'
+exprkind = 'dollar' | 'function' | 'raw'

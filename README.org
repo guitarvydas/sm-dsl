@@ -16,7 +16,7 @@
 #+end_src
 #+name: dsl
 #+begin_src lisp :results output
-  (sm-dsl::generate-stacks)))
+  (sm-dsl::generate-stacks)
 #+end_src
 
 #+name: dsl
