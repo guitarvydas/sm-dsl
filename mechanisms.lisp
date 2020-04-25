@@ -114,7 +114,7 @@
   (~replace-top expr expr))
 
 (defmethod $dollarExpr__NewScope ((self sm-dsl-parser))
-  (~new-scope dollarExpr))
+  (~newscope dollarExpr))
 
 (defmethod $dollarExpr__Output ((self sm-dsl-parser))
   (~output dollarExpr))
