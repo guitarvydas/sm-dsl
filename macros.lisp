@@ -57,18 +57,16 @@
   `(stack-dsl:%push-empty ,(~in ty)))
 
 (defmacro ~replace-top (dest-ty source-ty)
-  `(let ((val (pop ,(~out source-ty))))
+  `(let ((val (stack-dsl:%pop ,(~out source-ty))))
      (stack-dsl:%ensure-type val (%element-type ,(~in dest-ty)))
      (stack-dsl:%replace-top ,(~in dest-ty) ,(~out source-ty))
      (stack-dsl:%pop ,(~out source-ty))))
 
 (defmacro ~append (stack1 stack2)
-  `(progn
-     (stack-dsl:%ensure-appendable-type ,stack1)
-     (stack-dsl:%ensure-type (first ,stack2) (stack-dsl:%type ,stack1))
-     (stack-dsl::%append 
-      ,(~in stack1)
-      (first ,(~out stack2)))
+  `(let ((val (stack-dsl:%top ,(~out stack2))))
+     (stack-dsl:%ensure-appendable-type ,(~in stack1))
+     (stack-dsl:%ensure-type val (stack-dsl:%type ,(~in stack1)))
+     (stack-dsl::%append ,(~in stack1) val)
      (stack-dsl:%pop ,(~out stack2))))
 
 (defmacro ~set-field (to field-name from)
@@ -78,5 +76,5 @@
       val
       ,(~field-type field-name to))
      (stack-dsl:%set-field ,(~in to) ',field-name ,(~out from))
-     (stack-dsl:%pop ,(out from))))
+     (stack-dsl:%pop ,(~out from))))
 
