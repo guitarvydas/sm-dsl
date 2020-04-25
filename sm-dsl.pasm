@@ -16,7 +16,7 @@
    SYMBOL/machine
    @machineName                 
                                   $statementsBag__NewScope
-   @optional-initially              $machineDescriptor__SetField_initially_from_StatementsBag
+   @optional-initially              $machineDescriptor__SetField_initiallyDescriptor_from_StatementsBag
                                   $statesBag__NewScope
    @states                          $machine__SetField_states_from_StatesBag
   SYMBOL/end SYMBOL/machine

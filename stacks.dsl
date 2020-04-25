@@ -1,12 +1,12 @@
-machineDescriptor = { name initiallyDescriptor statesBlock pipeline }
+machineDescriptor = { name initiallyDescriptor statesBag pipeline }
 initiallyDescriptor = :bag statement
-statesBlock = :bag state
-state = { name eventsBlock }
-eventsBlock = :bag event
-event = { onName statementsBlock }
+statesBag = :bag state
+state = { name eventsBag }
+eventsBag = :bag event
+event = { onName statementsBag }
 onName = :string
 
-statementsBlock = :bag statement
+statementsBag = :bag statement
 statement = | sendStatement | callStatement
 sendStatement = { callkind='send' expr }
 callStatement = { callkind='call' exprmap }

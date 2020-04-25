@@ -11,8 +11,8 @@
 (defmethod $machineDescriptor__SetField_pipeline_from_pipeline ((self sm-dsl-parser))
   (~set-field machineDescriptor pipeline pipeline))
 
-(defmethod $machineDescriptor__SetField_initially_from_StatementsBag ((self sm-dsl-parser))
-  (~set-field machineDescriptor initially statementsBag))
+(defmethod $machineDescriptor__SetField_initiallyDescriptor_from_StatementsBag ((self sm-dsl-parser))
+  (~set-field machineDescriptor initiallyDescriptor statementsBag))
 
 (defmethod $machineDescriptor__SetField_states_from_StatementsBag ((self sm-dsl-parser))
   (~set-field machineDescriptor states statementsBag))
@@ -151,8 +151,14 @@
   (~newscope name))
 
 (defmethod $name__ReplaceFrom_Name ((self sm-dsl-parser))
-  (~replace-top name name))
+    (~replace-top name name))
   
 (defmethod $symbol__GetName ((self sm-dsl-parser))
-  (push (scanner:token-text (pasm:accepted-token self))
-	(output-name (env self))))
+  (let ((str (scanner:token-text (pasm:accepted-token self)))
+	(name-object (make-instance 'sm-dsl::name-type)))
+    (setf (stack-dsl:%type name-object) 'name-type)
+    (setf (stack-dsl:val name-object) str)
+    (push name-object (stack-dsl:%stack (output-name (env self))))))
+
+(defmethod $name__Output ((self sm-dsl-parser))
+  (~output name))

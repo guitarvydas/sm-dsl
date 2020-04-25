@@ -70,11 +70,11 @@
      (stack-dsl:%pop ,(~out stack2))))
 
 (defmacro ~set-field (to field-name from)
-  ;; set to.f := from, pop from
+  ;; set top(to).f := from, pop from
   `(let ((val (stack-dsl:%pop ,(~out from))))
      (stack-dsl:%ensure-type 
       val
       ,(~field-type field-name to))
-     (stack-dsl:%set-field ,(~in to) ',field-name ,(~out from))
+     (stack-dsl:%set-field (stack-dsl:%top ,(~in to)) ',field-name ,(~out from))
      (stack-dsl:%pop ,(~out from))))
 
