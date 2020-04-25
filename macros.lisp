@@ -43,39 +43,39 @@
 ;; % is used to prefix support routines.
 ;; (I could have used Common Lisp packages to qualify names instead of prefixes, but I thought that prefixes are less scary and show (visually) my design intentions).
 
-(defun ~in(name) `,(intern (string-upcase (format nil "input-~a" name))))
-(defun ~out(name) `,(intern (string-upcase (format nil "output-~a" name))))
-(defun ~field-type(name) `,(intern (string-upcase (format nil "%field-type-~a" name))))
+(defun ~in(name) `(,(intern (string-upcase (format nil "input-~a" name))) (env self)))
+(defun ~out(name) `(,(intern (string-upcase (format nil "output-~a" name))) (env self)))
+(defun ~field-type(field-name stack) `(,(intern (string-upcase (format nil "%field-type-~a" field-name))) ,(~in stack)))
 
 
 (defmacro ~output (ty)
   `(progn 
-     (stack-dsl:%output (,(~in ty) (env self)) (,(~out ty) (env self)))
-     (stack-dsl:%pop (,(~out ty) (env self)))))
+     (stack-dsl:%output ,(~in ty) ,(~out ty))
+     (stack-dsl:%pop ,(~out ty))))
 
 (defmacro ~newscope (ty)
-  `(stack-dsl:%push-empty (,(~in ty) (env self))))
+  `(stack-dsl:%push-empty ,(~in ty)))
 
-(defmacro ~replace-top (ty1 ty2)
-  `(let ((val (pop (,(~out ty2) (env self)))))
-     (stack-dsl:%check-type val (stack-dsl:%element-type (,(~in ty1) (env self))))
-     (stack-dsl:%replace-top (,(~in ty1) (env self)) (,(~out ty2) (env self)))
-     (stack-dsl:%pop (,(~out ty2) (env self)))))
+(defmacro ~replace-top (dest-ty source-ty)
+  `(let ((val (pop ,(~out source-ty))))
+     (stack-dsl:%ensure-type val (%element-type dest-ty)
+     (stack-dsl:%replace-top ,(~in dest-ty) ,(~out source-ty))
+     (stack-dsl:%pop ,(~out source-ty)))))
 
 (defmacro ~append (stack1 stack2)
   `(progn
      (stack-dsl:%check-appendable-type ,stack1)
-     (stack-dsl:%check-type (first ,stack2) (stack-dsl:%type ,stack1))
+     (stack-dsl:%ensure-type (first ,stack2) (stack-dsl:%type ,stack1))
      (stack-dsl::%append 
-      (,(~in stack1) (env self))
-      (,(~out stack2) (env self)))
-     (stack-dsl:%pop (,(~out stack2) (env self)))))
+      ,(~in stack1)
+      (first ,(~out stack2)))
+     (stack-dsl:%pop ,(~out stack2))))
 
 (defmacro ~set-field (to field-name from)
   ;; set to.f := from, pop from
-  `(let ((val (stack-dsl:%pop (,(~out from) (env self)))))
-     (stack-dsl:%check-type 
+  `(let ((val (stack-dsl:%pop ,(~out from))))
+     (stack-dsl:%ensure-type 
       val
-      (,(~field-type field-name) (,(~in to) (env self))))
-     (stack-dsl:%set-field ,field-name ,(~in to)(env self)) val))
+      ,(~field-type field-name to))
+     (stack-dsl:%set-field ,(~in to) ',field-name ,(~out from))))
 

@@ -12,10 +12,10 @@
   (~set-field machineDescriptor pipeline pipeline))
 
 (defmethod $machineDescriptor__SetField_initially_from_StatementsBag ((self sm-dsl-parser))
-  (~set-field machineDescriptor 'initially statementsBag))
+  (~set-field machineDescriptor initially statementsBag))
 
 (defmethod $machineDescriptor__SetField_states_from_StatementsBag ((self sm-dsl-parser))
-  (~set-field machineDescriptor 'states statementsBag))
+  (~set-field machineDescriptor states statementsBag))
 
 (defmethod $machineDescriptor__Output ((self sm-dsl-parser))
   (~output machineDescriptor))
@@ -62,13 +62,13 @@
   (~output statement))
 
 (defmethod $statement__SetField_events_from_eventsBag ((self sm-dsl-parser))
-  (~set-field statement 'events eventsBag))
+  (~set-field statement events eventsBag))
 
 (defmethod $statement__SetField__from_name ((self sm-dsl-parser))
-  (~set-field statement 'event name))
+  (~set-field statement event name))
 
 (defmethod $statement__SetField_arg_from_expr ((self sm-dsl-parser))
-  (~set-field statement 'arg expr))
+  (~set-field statement arg expr))
 
 ;; eventsBag
 (defmethod $eventsBag__NewScope ((self sm-dsl-parser))
@@ -88,7 +88,7 @@
   (~output event))
 
 (defmethod $event__SetField_code_from_statementsBag ((self sm-dsl-parser))
-  (~set-field event 'code statementsBag))
+  (~set-field event code statementsBag))
 
 ;; exprsBag
 (defmethod $exprsBag__NewScope ((self sm-dsl-parser))

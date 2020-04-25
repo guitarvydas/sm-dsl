@@ -102,4 +102,9 @@
 
 * results
 #+RESULTS: dsl
+: To load "sm-dsl":
+:   Load 1 ASDF system:
+:     sm-dsl
+: ; Loading "sm-dsl"
+: 
 
