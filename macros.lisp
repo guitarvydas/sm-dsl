@@ -58,7 +58,7 @@
 
 (defmacro ~replace-top (dest-ty source-ty)
   `(let ((val (stack-dsl:%pop ,(~out source-ty))))
-     (stack-dsl:%ensure-type val (%element-type ,(~in dest-ty)))
+     (stack-dsl:%ensure-type val (stack-dsl:%element-type ,(~in dest-ty)))
      (stack-dsl:%replace-top ,(~in dest-ty) ,(~out source-ty))
      (stack-dsl:%pop ,(~out source-ty))))
 
