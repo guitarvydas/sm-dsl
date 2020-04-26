@@ -45,8 +45,8 @@
 
 (defun ~in(name) `(,(intern (string-upcase (format nil "input-~a" name))) (env self)))
 (defun ~out(name) `(,(intern (string-upcase (format nil "output-~a" name))) (env self)))
-(defun ~field-type(field-name stack) `(,(intern (string-upcase (format nil "%field-type-~a" field-name))) ,(~in stack)))
 
+(defun ~field(fname) `,(intern (string-upcase (format nil "%field-type-~a" fname))))
 
 (defmacro ~output (ty)
   `(progn 
@@ -59,7 +59,7 @@
 (defmacro ~replace-top (dest-ty source-ty)
   `(let ((val (stack-dsl:%pop ,(~out source-ty))))
      (stack-dsl:%ensure-type val (stack-dsl:%element-type ,(~in dest-ty)))
-     (stack-dsl:%replace-top ,(~in dest-ty) ,(~out source-ty))
+     (stack-dsl:%replace-top ,(~in dest-ty) val)
      (stack-dsl:%pop ,(~out source-ty))))
 
 (defmacro ~append (stack1 stack2)
@@ -71,10 +71,10 @@
 
 (defmacro ~set-field (to field-name from)
   ;; set top(to).f := from, pop from
-  `(let ((val (stack-dsl:%pop ,(~out from))))
+  `(let ((val (stack-dsl:%top ,(~out from))))
      (stack-dsl:%ensure-type 
       val
-      ,(~field-type field-name to))
-     (stack-dsl:%set-field (stack-dsl:%top ,(~in to)) ',field-name ,(~out from))
+      (,(~field field-name) (stack-dsl::%top ,(~in to))))
+     (stack-dsl:%set-field (stack-dsl:%top ,(~in to)) ',field-name val)
      (stack-dsl:%pop ,(~out from))))
 
