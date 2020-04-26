@@ -162,3 +162,23 @@
 
 (defmethod $name__Output ((self sm-dsl-parser))
   (~output name))
+
+;; call statement
+(defmethod $callStatement__NewScope ((self sm-dsl-parser))
+  (~newscope callStatement))
+  
+(defmethod $callStatement__Output ((self sm-dsl-parser))
+  (~output callStatement))
+
+(defmethod $callStatement__CoerceTo_statement ((self sm-dsl-parser))
+  ;; move output from callStatement stack to output of statement stack
+  (let ((v (stack-dsl::%top (output-callStatement (env self)))))
+    (let ((type-checker (stack-dsl::%element-type (output-statement (env self)))))
+      (let ((final-type (%ensure-type type-checker v)))
+	;;(setf (%type v) final-type) ;; don't change the type - need it later during emit
+	(stack-dsl::%push v (output-statement (env self)))
+	(stack-dsl::%pop (output-callStatement (env self)))))))
+
+(defmethod $callStatement__
+(defmethod $callStatement__
+    
