@@ -13,7 +13,7 @@ callStatement = { callkind='call' exprmap }
 exprMap = :map expr
 expr = | rawExpr | dollarExpr | callExpr
 dollarExpr = { exprkind='dollar' name }
-callExpr = { exprkind='function' exprMap }
+callExpr = { exprkind='function' name exprMap }
 rawExpr = { exprkind='raw' rawText }
 rawText = :string
 name = :string
