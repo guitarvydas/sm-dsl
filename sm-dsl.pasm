@@ -4,7 +4,7 @@
 = statemachine0
   ~rmSpaces
   {[ ?SYMBOL/machine 
-       @machine                  $machineDescriptor__ReplaceFrom_machineDescriptor
+       @machine
     | * >
   ]}
   @pipeline                    $machineDescriptor__SetField_pipeline_from_pipeline
@@ -13,7 +13,7 @@
 % machine << (nothing) >> machineDescriptor
 = machine
                                 $machineDescriptor__NewScope
-   SYMBOL/machine
+   SYMBOL/machine                   $machineDescriptor__SetField_name_from_name
    @machineName                 
    @optional-initially              $machineDescriptor__SetField_initiallyDescriptor_from_StatementsBag
    @states                          $machine__SetField_states_from_StatesBag
@@ -21,8 +21,7 @@
                                 $machineDescriptor__Output
 % machineName << (nothing) >> name
 = machineName
-                                $name__NewScope
-  SYMBOL                           $symbol__GetName $name__ReplaceFrom_Name
+  SYMBOL                           $symbol__GetName
                                 $name__Output
 
 % << (nothing) >> statementsBag
@@ -59,9 +58,8 @@
 
 % stateName << (nothing) >> name
 = stateName
-                                $name__NewScope
     SYMBOL 
-                                  $symbol__GetName $name__ReplaceFrom_name
+                                  $symbol__GetName
                                 $name__Output
 
 % event << (nothing) >> eventsBag
@@ -81,9 +79,8 @@
 
 % eventName << (nothing) >> name
 = eventName
-                                $name__NewScope
     SYMBOL/in  %% in v0 state machines, all input events are called 'in' (hard-wired name)
-                                  $symbol__GetName $name__Replace_From_name
+                                  $symbol__GetName
                                 $name__Output
 
 
@@ -116,10 +113,9 @@
 
 % expr << (nothing) >> expr
 = expr
-                                $expr__NewScope
-  [ ?'$' @dollarExpr              $dollarExpr__CoerceTo_expr $expr_ReplaceFrom_expr
-  | ?'{' @rawExpr                 $rawExpr__CoerceTo_expr $expr_ReplaceFrom_expr
-  | &callableSymbol @callExpr     $callExpr_CoerceTo_expr $expr_ReplaceFrom_expr
+  [ ?'$' @dollarExpr              $dollarExpr__MovTo_expr
+  | ?'{' @rawExpr                 $rawExpr__MoveTo_expr
+  | &callableSymbol @callExpr     $callExpr_MoveTo_expr
   | *                             $makeEmptyExpr
   ]
                                 $expr__Output
@@ -129,13 +125,13 @@
                                $dollarExpr__NewScope
                                $dollarExpr__Output			       
 
-% rawExpr >> rawExpr
+% >> rawExpr
 = rawExpr
                                $rawExpr__NewScope
   '{' 
-  {[ ?'{' @rawExpr               $rawExpr__ReplaceFrom_expr
+  {[ ?'{' @rawExpr               $rawExpr__Join
    | ?'}' >
-   | * .                         $string__GetText $rawExpr__AppendField_rawText_from_string
+   | * .                         $rawExpr__StringAppend_rawText
   ]}
   '}'
                                $rawExpr__Output

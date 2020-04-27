@@ -29,6 +29,11 @@
                         :components ((:file "stacks") ;; generated
 				     (:file "classes")
 				     (:file "macros")
-				     (:file "sm-dsl")
-				     (:file "mechanisms")
-				     (:file "transpile" :depends-on ("classes"))))))
+				     (:file "sm-dsl") ;; generated
+				     (:file "mechanisms"
+					    :depends-on ("stacks" "classes" "macros"))
+				     (:file "transpile" 
+					    :depends-on ("classes"
+							 "macros"
+							 "sm-dsl"
+							 "mechanisms"))))))

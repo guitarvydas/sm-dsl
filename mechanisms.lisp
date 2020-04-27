@@ -5,9 +5,6 @@
 (defmethod $machineDescriptor__NewScope ((self sm-dsl-parser))
   (~newscope machineDescriptor))
 
-(defmethod $machineDescriptor__ReplaceFrom_machineDescriptor ((self sm-dsl-parser))
-  (~replace-top machineDescriptor machineDescriptor))
-
 (defmethod $machineDescriptor__SetField_pipeline_from_pipeline ((self sm-dsl-parser))
   (~set-field machineDescriptor pipeline pipeline))
 
@@ -17,9 +14,12 @@
 (defmethod $machineDescriptor__SetField_states_from_StatementsBag ((self sm-dsl-parser))
   (~set-field machineDescriptor states statementsBag))
 
+(defmethod $machineDescriptor__SetField_name_from_name ((self sm-dsl-parser))
+  (~set-field machineDescriptor name name))
+
 (defmethod $machineDescriptor__Output ((self sm-dsl-parser))
   (~output machineDescriptor))
-  
+
 (defmethod $machineDescriptor_emit ((self sm-dsl-parser))
   (error "niy"))
 
@@ -27,9 +27,6 @@
 ;; statementsBag
 (defmethod $statementsBag__NewScope ((self sm-dsl-parser))
   (~newscope statementsBag))
-
-(defmethod $statementsBag__ReplaceFrom_statement ((self sm-dsl-parser))
-  (~replace-top statements statemtent))
 
 (defmethod $statementsBag__AppendFrom_statement ((self sm-dsl-parser))
   (~append statementsBag statement))
@@ -43,9 +40,6 @@
 
 (defmethod $statesBag__Output ((self sm-dsl-parser))
   (~output statesBag))
-
-(defmethod $statesBag__ReplaceFrom_statement ((self sm-dsl-parser))
-  (~replace-top statesBag statement))
 
 ;; state
 (defmethod state__NewScope ((self sm-dsl-parser))
@@ -110,27 +104,50 @@
 (defmethod $expr__Output ((self sm-dsl-parser))
   (~output expr))
 
-(defmethod $expr__ReplaceFrom_expr ((self sm-dsl-parser))
-  (~replace-top expr expr))
-
+;; dollar expr
 (defmethod $dollarExpr__NewScope ((self sm-dsl-parser))
   (~newscope dollarExpr))
 
 (defmethod $dollarExpr__Output ((self sm-dsl-parser))
   (~output dollarExpr))
 
+(defmethod $dollarExpr__MoveTo_expr ((self sm-dsl-parser))
+  (~moveOutput expr dollarExpr))
+
+;; call expr
+(defmethod $callExpr__NewScope ((self sm-dsl-parser))
+  (~newscope callExpr))
+
+(defmethod $callExpr__Output ((self sm-dsl-parser))
+  (~output callExpr))
+
+(defmethod $callExpr__MoveTo_expr ((self sm-dsl-parser))
+  (~moveOutput expr callExpr))
+
 ;; raw Exprs
 (defmethod $rawExpr__NewScope ((self sm-dsl-parser))
-  (~newscope rawExpr))
+  (~newscope rawExpr)
+  (setf (rawText (stack-dsl:%top (input-rawExpr (env self)))) ""))
 
 (defmethod $rawExpr__Output ((self sm-dsl-parser))
   (~output rawExpr))
 
-(defmethod $rawExpr__ReplaceFrom_expr ((self sm-dsl-parser))
-  (~replace-top rawExpr expr))
+(defmethod $rawExpr__StringAppend_rawText ((self sm-dsl-parser))
+  (let ((r (stack-dsl:%top (input-rawExpr (env self)))))
+    (setf (rawText r) (concatenate 'string (rawText r) (scanner:token-text (pasm:accepted-token self))))))
 
-(defmethod $rawExpr__AppendField_rawText_from__string ((self sm-dsl-parser))
-  (~append rawText string))
+(defmethod $rawExpr__Join ((self sm-dsl-parser))
+  ;; consume 2 rawExprs, >> 1 rawExpr
+  ;; output-rawExpr.tos[2] = string-append (output-rawExpr.tos[2], output-rawExpr.tos ; pop output-rawExpr
+  (let ((r1 (stack-dsl:%top (output-rawExpr (env self)))))
+    (stack-dsl:%pop (output-rawExpr (env self)))
+    (let ((r2 (stack-dsl:%top (output-rawExpr (env self)))))
+      (setf (stack-dsl:%value r2) 
+	    (concatenate 'string (stack-dsl:%value r2) (stack-dsl:%value r1))))))
+
+(defmethod $rawExpr__MoveTo_expr ((self sm-dsl-parser))
+  ;; output-expr.push(output-rawExpr.top) ; output-rawExpr.pop
+  (~moveOutput expr rawExpr))
 
 ;; pipeline
 (defmethod $pipeline__NewScope ((self sm-dsl-parser))
@@ -150,14 +167,11 @@
 (defmethod $name__NewScope ((self sm-dsl-parser))
   (~newscope name))
 
-(defmethod $name__ReplaceFrom_Name ((self sm-dsl-parser))
-    (~replace-top name name))
-  
 (defmethod $symbol__GetName ((self sm-dsl-parser))
   (let ((str (scanner:token-text (pasm:accepted-token self)))
 	(name-object (make-instance 'sm-dsl::name-type)))
     (setf (stack-dsl:%type name-object) 'name-type)
-    (setf (stack-dsl:val name-object) str)
+    (setf (stack-dsl:%value name-object) str)
     (push name-object (stack-dsl:%stack (output-name (env self))))))
 
 (defmethod $name__Output ((self sm-dsl-parser))
@@ -171,14 +185,4 @@
   (~output callStatement))
 
 (defmethod $callStatement__CoerceTo_statement ((self sm-dsl-parser))
-  ;; move output from callStatement stack to output of statement stack
-  (let ((v (stack-dsl::%top (output-callStatement (env self)))))
-    (let ((type-checker (stack-dsl::%element-type (output-statement (env self)))))
-      (let ((final-type (%ensure-type type-checker v)))
-	;;(setf (%type v) final-type) ;; don't change the type - need it later during emit
-	(stack-dsl::%push v (output-statement (env self)))
-	(stack-dsl::%pop (output-callStatement (env self)))))))
-
-(defmethod $callStatement__
-(defmethod $callStatement__
-    
+  (~moveOutput callStatement statement))
