@@ -79,6 +79,6 @@
   ;; keep existing type - used for emission
   `(let ((v (stack-dsl::%top ,(~out from))))
      (let ((ty (stack-dsl::%element-type ,(~out to))))
-       (%ensure-type v ty)
+       (stack-dsl::%ensure-type v ty)
        (stack-dsl::%push v ,(~out to))
        (stack-dsl::%pop    ,(~out from)))))

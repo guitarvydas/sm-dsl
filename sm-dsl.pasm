@@ -113,7 +113,7 @@
 = expr
   [ ?'$' @dollarExpr              $dollarExpr__MoveTo_expr
   | ?'{' @rawExpr                 $rawExpr__MoveTo_expr
-  | &callableSymbol @callExpr     $callExpr_MoveTo_expr
+  | &callableSymbol @callExpr     $callExpr__MoveTo_expr
   | *                             $expr__NewScope
   ]
                                 $expr__Output
