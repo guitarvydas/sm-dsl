@@ -76,7 +76,7 @@
 
 ;; event
 (defmethod $event__NewScope ((self sm-dsl-parser))
-  (~newscope eventsBag))
+  (~newscope event))
 
 (defmethod $event__Output ((self sm-dsl-parser))
   (~output event))
@@ -84,18 +84,15 @@
 (defmethod $event__SetField_code_from_statementsBag ((self sm-dsl-parser))
   (~set-field event code statementsBag))
 
-;; exprsBag
-(defmethod $exprsBag__NewScope ((self sm-dsl-parser))
-  (~newscope exprsBag))
+;; exprMap
+(defmethod $exprMap__NewScope ((self sm-dsl-parser))
+  (~newscope exprMap))
 
-(defmethod $exprsBag__Output ((self sm-dsl-parser))
-  (~output exprsBag))
+(defmethod $exprMap__Output ((self sm-dsl-parser))
+  (~output exprMap))
 
-(defmethod $exprsBag__AppendFrom_parameter ((self sm-dsl-parser))
-  (~append exprsBag parameter))
-
-(defmethod $exprsBag__AppendFrom_expr ((self sm-dsl-parser))
-  (~append exprsBag expr))
+(defmethod $exprMap__AppendFrom_expr ((self sm-dsl-parser))
+  (~append exprMap expr))
 
 ;; expr
 (defmethod $expr__NewScope ((self sm-dsl-parser))
@@ -124,6 +121,20 @@
 (defmethod $callExpr__MoveTo_expr ((self sm-dsl-parser))
   (~moveOutput expr callExpr))
 
+(defmethod $callExpr__SetField_name_from_name ((self sm-dsl-parser))
+  (~set-field callExpr name name))
+
+(defmethod $callExpr__SetField_exprMap_from_exprMap ((self sm-dsl-parser))
+  ;(~set-field callExpr exprMap exprMap))
+  (LET ((VAL (STACK-DSL:%TOP (OUTPUT-EXPRMAP (ENV SELF)))))
+(break)
+    (STACK-DSL:%ENSURE-TYPE VAL
+			    (%FIELD-TYPE-EXPRMAP
+			     (STACK-DSL:%TOP (INPUT-CALLEXPR (ENV SELF)))))
+    (STACK-DSL:%SET-FIELD (STACK-DSL:%TOP (INPUT-CALLEXPR (ENV SELF))) 'EXPRMAP
+			  VAL)
+    (STACK-DSL:%POP (OUTPUT-EXPRMAP (ENV SELF))))
+  )
 ;; raw Exprs
 (defmethod $rawExpr__NewScope ((self sm-dsl-parser))
   (~newscope rawExpr)
@@ -134,16 +145,19 @@
 
 (defmethod $rawExpr__StringAppend_rawText ((self sm-dsl-parser))
   (let ((r (stack-dsl:%top (input-rawExpr (env self)))))
-    (setf (rawText r) (concatenate 'string (rawText r) (scanner:token-text (pasm:accepted-token self))))))
+    (let ((text (scanner:token-text (pasm:accepted-token self))))
+      (if (characterp text)
+	  (setf (rawText r) (concatenate 'string (rawText r) (string text)))
+	  (setf (rawText r) (concatenate 'string (rawText r) text))))))
 
 (defmethod $rawExpr__Join ((self sm-dsl-parser))
-  ;; consume 2 rawExprs, >> 1 rawExpr
-  ;; output-rawExpr.tos[2] = string-append (output-rawExpr.tos[2], output-rawExpr.tos ; pop output-rawExpr
+  ;; consume 1 rawExprs from output, >> modify input rawExp
+  ;; input-rawExpr.top = string-append (input-rawExpr.top, output-rawExpr.tos) ; pop output-rawExpr
   (let ((r1 (stack-dsl:%top (output-rawExpr (env self)))))
     (stack-dsl:%pop (output-rawExpr (env self)))
-    (let ((r2 (stack-dsl:%top (output-rawExpr (env self)))))
-      (setf (stack-dsl:%value r2) 
-	    (concatenate 'string (stack-dsl:%value r2) (stack-dsl:%value r1))))))
+    (let ((r2 (stack-dsl:%top (input-rawExpr (env self)))))
+      (setf (rawText r2) 
+	    (concatenate 'string (rawText r2) (rawText r1))))))
 
 (defmethod $rawExpr__MoveTo_expr ((self sm-dsl-parser))
   ;; output-expr.push(output-rawExpr.top) ; output-rawExpr.pop
