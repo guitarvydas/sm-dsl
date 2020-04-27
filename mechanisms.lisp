@@ -125,16 +125,8 @@
   (~set-field callExpr name name))
 
 (defmethod $callExpr__SetField_exprMap_from_exprMap ((self sm-dsl-parser))
-  ;(~set-field callExpr exprMap exprMap))
-  (LET ((VAL (STACK-DSL:%TOP (OUTPUT-EXPRMAP (ENV SELF)))))
-(break)
-    (STACK-DSL:%ENSURE-TYPE VAL
-			    (%FIELD-TYPE-EXPRMAP
-			     (STACK-DSL:%TOP (INPUT-CALLEXPR (ENV SELF)))))
-    (STACK-DSL:%SET-FIELD (STACK-DSL:%TOP (INPUT-CALLEXPR (ENV SELF))) 'EXPRMAP
-			  VAL)
-    (STACK-DSL:%POP (OUTPUT-EXPRMAP (ENV SELF))))
-  )
+  (~set-field callExpr exprMap exprMap))
+
 ;; raw Exprs
 (defmethod $rawExpr__NewScope ((self sm-dsl-parser))
   (~newscope rawExpr)

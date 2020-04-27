@@ -50,8 +50,8 @@
 
 * results
 #+RESULTS: dsl
-: top(in)=NIL top(out)=#<SM-DSL::NAME-TYPE {1002716E73}>
-: top(md-in)=#<SM-DSL::MACHINEDESCRIPTOR-TYPE {1002712633}> top(md-out)=NIL
+: top(in)=NIL top(out)=#<SM-DSL::NAME-TYPE {10022BEE73}>
+: top(md-in)=#<SM-DSL::MACHINEDESCRIPTOR-TYPE {10022BA633}> top(md-out)=NIL
 
 * development
 #+name: dsl
