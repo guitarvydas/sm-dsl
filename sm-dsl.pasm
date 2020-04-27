@@ -30,13 +30,11 @@
      SYMBOL/initially
      @statements 
      SYMBOL/end SYMBOL/initially
-  | * returnEmptyStatementsBag
+  | * 
+     $statementsBag__NewScope $statementsBag__Output
   ]
                                 $statementsBag__Output
 
-% returnEmptyStatementsBag << (nothing) >> statementsBag
-= returnEmptyStatementsBag      
-  $statementsBag__NewScope $statementsBag__Output
 
 % states << (nothing) >> statesBag
 = states                        
@@ -106,17 +104,17 @@
 = callStatement
                                 $callStatement__NewScope
   SYMBOL                          $symbol__GetName $statement__SetField_name_from_name
-  @optionalParameters             $statement__SetField_argsfrom_exprsBag
+  @optionalParameters             $statement__SetField_argsfrom_exprMap
                                 $callStatement__Output
 
 
 
 % expr << (nothing) >> expr
 = expr
-  [ ?'$' @dollarExpr              $dollarExpr__MovTo_expr
+  [ ?'$' @dollarExpr              $dollarExpr__MoveTo_expr
   | ?'{' @rawExpr                 $rawExpr__MoveTo_expr
   | &callableSymbol @callExpr     $callExpr_MoveTo_expr
-  | *                             $makeEmptyExpr
+  | *                             $expr__NewScope
   ]
                                 $expr__Output
 % dollarExpr >> dollarExpr
@@ -128,18 +126,23 @@
 % >> rawExpr
 = rawExpr
                                $rawExpr__NewScope
-  '{' 
+  '{'                           $rawExpr__StringAppend_rawText
   {[ ?'{' @rawExpr               $rawExpr__Join
    | ?'}' >
    | * .                         $rawExpr__StringAppend_rawText
   ]}
-  '}'
+  '}'                           $rawExpr__StringAppend_rawText
                                $rawExpr__Output
 
 % callExpr >> callExpr
 = callExpr
+                              $callExpr__NewScope
   SYMBOL
+                                $symbol__GetName
+                                $callExpr__SetField_name_from_name
   @optionalParameters
+                                $callExpr__SetField_exprMap_from_exprMap
+			      $callExpr__Output
 
 % callableSymbol parse-time predicate >> Boolean
 - callableSymbol
@@ -148,29 +151,24 @@
   | *           ^fail
   ]
 
-% optionalParameters << (nothing) >> exprsBag
+% optionalParameters >> exprMap
 = optionalParameters
-                                $exprsBag__NewScope
+                                $exprMap__NewScope
   [ ?'('
     '('
     @parameters
     ')'
-  | *                             $returnEmptyExprsBag
+  | *
   ]
-                                $exprsBag__Output
+                                $exprMap__Output
 
-% returnEmptyExprsBag << (nothing) >> exprsBag
-= returnEmptyExprsBag
-  exprsBag__NewScope
-  exprsBag__Output
-
-% parameters <<>> exprsBag
+% parameters <<>> exprMap
 = parameters
   {[ ?'$'   '$' 
-        @expr                     $exprsBag__AppendFrom_expr
+        @expr                     $exprMap__AppendFrom_expr
    | ?')' >
    | ?SYMBOL                    
-     @expr                        $exprsBag__AppendFrom_expr
+     @expr                        $exprMap__AppendFrom_expr
   ]}
 
 % pipeline >> pipeline

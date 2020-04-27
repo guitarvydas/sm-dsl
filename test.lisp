@@ -48,8 +48,11 @@
     )))
 
 (defun test2 ()
-  (let ((str "{ a b c }"))
-
+  #+nil(let ((str "{ a {b} c }"))
     (transpile-snippet str 'rawExpr))
+  #+nil(let ((str "$"))
+    (transpile-snippet str 'dollarExpr))
 
+  (let ((str "a"))
+    (transpile-snippet str 'callExpr))
 )
