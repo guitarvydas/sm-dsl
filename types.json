@@ -1,0 +1,89 @@
+[
+    { "name" : "RAWTEXT",
+      "descriptor" : 
+      { "kind" : "string" }},
+    { "name" : "ONNAME",
+      "descriptor" : 
+      { "kind" : "string" }},
+    { "name" : "NAME",
+      "descriptor" : 
+      { "kind" : "string" }},
+
+    {"name" : "EXPRKIND",
+     "descriptor" :
+     {"kind" : "enum",
+      "values" : [ "dollar", "function", "raw" ]}},
+    { "name" : "CALLKIND",
+      "descriptor" :
+      {"kind" : "enum",
+       "values" : [ "send", "call" ]}},
+    { "name" : "CALLEXPR",
+      "descriptor" :
+      { "kind" : "structure",
+	"fields" : [
+	    { "fieldName" : "exprkind", "fieldType" : "exprKind" },
+	    { "fieldName" : "name", "fieldType" : "name" },
+	    { "fieldName" : "exprMap", "fieldType" : "exprMap" }]}},
+    { "name" : "CALLSTATEMENT",
+      "descriptor" :
+      { "kind" : "structure",
+	"fields" : [{ "fieldName" : "callkind", "fieldType" : "callkind"},
+		    { "fieldName" : "exprMap", "fieldType" : "exprMap" }]}},
+    { "name" : "SENDSTATEMENT",
+      "descriptor" :
+      { "kind" : "structure",
+	"fields" : [{"fieldName" : "callkind", "fieldType" : "callKind"},
+		    { "fieldName" : "expr", "fieldType" : "expr"}]}},
+    { "name" : "EVENT",
+      "descriptor" :
+      { "kind" : "structure",
+	"fields" : [{"fieldName" : "onName", "fieldType" : "onName"},
+		    {"fieldName" : "statementsBag", "fieldType" : "statementsBag"}]}},
+    { "name" : "MACHINEDESCRIPTOR",
+      "descriptor" :
+      { "kind" : "structure",
+	"fields" : [{"fieldName" : "name", "fieldType" : "name"},
+		    {"fieldName" : "initiallyDescriptor", "fieldType" : "inititallyDescriptor"},
+		    {"fieldName" : "statesBag", "fieldType" : "statesBag"},
+		    {"fieldName" : "pipeline", "fieldType" : "pipeline"}]}},
+    { "name" : "STATE",
+      "descriptor" :
+      { "kind" : "structure",
+	"fields" : [{"fieldName" : "name", "fieldType" : "name"},
+		    {"fieldName" : "eventsBag", "fieldType" : "eventsBag"}]}},
+    { "name" : "RAWEXPR",
+      "descriptor" :
+      { "kind" : "structure",
+	"fields" : [{"fieldName" : "exprkind", "fieldType" : "exprkind"},
+		    {"fieldName" : "rawText", "fieldType" : "rawText"}]}},
+    { "name" : "DOLLAREXPR",
+      "descriptor" :
+      { "kind" : "structure",
+	"fields" : [{"fieldName" : "exprkind", "fieldType" : "exprkind"},
+		    {"fieldName" : "name", "fieldType" : "name"}]}},
+    { "name" : "EXPRMAP",
+      "descriptor" :
+      { "kind" : "map", "elementType" : "expr" }},
+    { "name" : "PIPELINE",
+      "descriptor" :
+      { "kind" : "map", "elementType" : "name" }},
+    { "name" : "STATEMENTSBAG",
+      "descriptor" :
+      { "kind" : "bag", "elementType" : "statement" }},
+    { "name" : "EVENTSBAG",
+      "descriptor" :
+      { "kind" : "bag", "elementType" : "event" }},
+    { "name" : "STATESBAG",
+      "descriptor" :
+      { "kind" : "bag", "elementType" : "state" }},
+    { "name" : "INITIALLYDESCRIPTOR",
+      "descriptor" :
+      { "kind" : "bag", "elementType" : "statement" }},
+    { "name" : "STATEMENT",
+      "descriptor" :
+      { "kind" : "compound", "types" : ["rawExpr", "dollarExpr", "callExpr"]}},
+    { "name" : "EXPR",
+      "descriptor" :
+      { "kind" : "compound", "types" : ["sendStatement", "callStatement"]}}
+]
+

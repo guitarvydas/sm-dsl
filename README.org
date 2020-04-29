@@ -50,8 +50,6 @@
 
 * results
 #+RESULTS: dsl
-: top(in)=NIL top(out)=#<SM-DSL::NAME-TYPE {10027E93C3}>
-: top(md-in)=#<SM-DSL::MACHINEDESCRIPTOR-TYPE {10027E4B73}> top(md-out)=NIL
 
 * development
 #+name: dsl
@@ -83,20 +81,25 @@
   (load (sm-dsl::path "sm-dsl.lisp"))
   (load (sm-dsl::path "trace-mechs.lisp"))
   (load (sm-dsl::path "trace-rules.lisp"))
+  (load (sm-dsl::path "type-descriptor.lisp"))
+  (load (sm-dsl::path "types.lisp"))
 #+end_src
-#+name: dsl
 #+begin_src lisp :results output
   (declaim (sb-ext:muffle-conditions style-warning))
+  (stack-dsl::initialize-types)
   (load (sm-dsl::path "test.lisp"))
   (sm-dsl::trace-all)
   (sm-dsl::trace-all-rules)
+#+end_src
+#+name: dsl
+#+begin_src lisp :results output
   (sm-dsl::test)
 #+end_src
 #+name: dsl
 
 #+begin_src lisp :results output
   (sm-dsl::test2)
-(inspect sm-dsl::*pp*)
+  #| (inspect sm-dsl::*pp*) |#
 #+end_src
 
 #+name: dsl
