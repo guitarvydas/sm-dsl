@@ -48,9 +48,6 @@
  (ql:quickload :stack-dsl/use)
 #+end_src
 
-* results
-#+RESULTS: dsl
-
 * development
 #+name: dsl
 #+begin_src lisp :results output
@@ -59,6 +56,12 @@
  rm -rf ~/quicklisp/local/projects/*~")
  (proclaim '(optimize (debug 3) (safety 3) (speed 0)))
  (declaim (sb-ext:muffle-conditions style-warning))
+ (ql:quickload :stack-dsl/generate)
+#+end_src
+
+#+name: dsl
+#+begin_src lisp :results output
+ (stack-dsl::generate)
  (ql:quickload :sm-dsl)
  (ql:quickload :sm-dsl/generate-stacks)
  (ql:quickload :sm-dsl/generate)
@@ -69,7 +72,6 @@
  (sm-dsl::generate-stacks)
  (sm-dsl::generate "SM-DSL")
 #+end_src
-
 
 #+name: dsl
 #+begin_src lisp :results output
@@ -83,7 +85,9 @@
   (load (sm-dsl::path "trace-rules.lisp"))
   (load (sm-dsl::path "type-descriptor.lisp"))
   (load (sm-dsl::path "types.lisp"))
+  (stack-dsl::initialize-types)
 #+end_src
+
 #+begin_src lisp :results output
   (declaim (sb-ext:muffle-conditions style-warning))
   (stack-dsl::initialize-types)
@@ -91,6 +95,9 @@
   (sm-dsl::trace-all)
   (sm-dsl::trace-all-rules)
 #+end_src
+
+#+RESULTS:
+
 #+name: dsl
 #+begin_src lisp :results output
   (sm-dsl::test)
@@ -106,4 +113,7 @@
 #+begin_src lisp :results output
   (load (sm-dsl::path "transpile.lisp"))
 #+end_src
+
+* results
+#+RESULTS: dsl
 

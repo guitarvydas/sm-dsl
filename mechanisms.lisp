@@ -6,16 +6,16 @@
   (~newscope machineDescriptor))
 
 (defmethod $machineDescriptor__SetField_pipeline_from_pipeline ((self sm-dsl-parser))
-  (~set-field machineDescriptor pipeline pipeline))
+  (~set-field "machineDescriptor" "pipeline" pipeline))
 
 (defmethod $machineDescriptor__SetField_initiallyDescriptor_from_StatementsBag ((self sm-dsl-parser))
-  (~set-field machineDescriptor initiallyDescriptor statementsBag))
+  (~set-field "machineDescriptor" "initiallyDescriptor" statementsBag))
 
 (defmethod $machineDescriptor__SetField_states_from_StatementsBag ((self sm-dsl-parser))
-  (~set-field machineDescriptor states statementsBag))
+  (~set-field "machineDescriptor" "states" statementsBag))
 
 (defmethod $machineDescriptor__SetField_name_from_name ((self sm-dsl-parser))
-  (~set-field machineDescriptor name name))
+  (~set-field "machineDescriptor" "name" name))
 
 (defmethod $machineDescriptor__Output ((self sm-dsl-parser))
   (~output machineDescriptor))
@@ -56,13 +56,13 @@
   (~output statement))
 
 (defmethod $statement__SetField_events_from_eventsBag ((self sm-dsl-parser))
-  (~set-field statement events eventsBag))
+  (~set-field "statement" "events" eventsBag))
 
 (defmethod $statement__SetField__from_name ((self sm-dsl-parser))
-  (~set-field statement event name))
+  (~set-field "statement" "event" name))
 
 (defmethod $statement__SetField_arg_from_expr ((self sm-dsl-parser))
-  (~set-field statement arg expr))
+  (~set-field "statement" "arg" expr))
 
 ;; eventsBag
 (defmethod $eventsBag__NewScope ((self sm-dsl-parser))
@@ -82,7 +82,7 @@
   (~output event))
 
 (defmethod $event__SetField_code_from_statementsBag ((self sm-dsl-parser))
-  (~set-field event code statementsBag))
+  (~set-field "event" "code" statementsBag))
 
 ;; exprMap
 (defmethod $exprMap__NewScope ((self sm-dsl-parser))
@@ -122,10 +122,10 @@
   (~moveOutput expr callExpr))
 
 (defmethod $callExpr__SetField_name_from_name ((self sm-dsl-parser))
-  (~set-field callExpr name name))
+  (~set-field "callExpr" "name" name))
 
 (defmethod $callExpr__SetField_exprMap_from_exprMap ((self sm-dsl-parser))
-  (~set-field callExpr exprMap exprMap))
+  (~set-field "callExpr" "exprMap" exprMap))
 
 ;; raw Exprs
 (defmethod $rawExpr__NewScope ((self sm-dsl-parser))

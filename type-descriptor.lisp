@@ -71,7 +71,7 @@ example type alist
 
 (defclass string-descriptor (type-descriptor)
   ())
-(defclass map-descriptor (type-descripor)
+(defclass map-descriptor (type-descriptor)
   ((element-type :accessor element-type :initarg :element-type)))
 (defclass bag-descriptor (type-descriptor)
   ((element-type :accessor element-type :initarg :element-type)))
@@ -103,36 +103,42 @@ example type alist
       (dolist (str values-string-list)
 	(push (intern (string-upcase str) "KEYWORD")
 	      values-keyword-list))
-      (make-instance 'enum-desriptor
+      (make-instance 'enum-descriptor
 		     :descriptor-alist adesc
 		     :value-list values-keyword-list))))
 
 (defun create-compound-descriptor (adesc)
-  (let ((string-list (cdr (assoc :values adesc))))
-    (make-instance 'compound-desriptor
-		   :descriptor-alist adesc
-		   :types string-list)))
+  (let ((string-list (cdr (assoc :types adesc))))
+    (let ((types-list (make-types-from-string-list string-list)))
+      (make-instance 'compound-descriptor
+		     :descriptor-alist adesc
+		     :types types-list))))
 
 (defun create-structure-descriptor (adesc)
-  (let ((string-list (cdr (assoc :values adesc))))
-    (make-instance 'structure-desriptor
-		   :descriptor-alist adesc
-		   :fields string-list)))
-
+  (let ((alist-name-type-pairs (cdr (assoc :fields adesc))))
+    ;; (( (:FIELD-NAME . "exprkind") (:FIELD-TYPE . "exprkind") )...)
+    ;; for this DSL, we need only the types, so we cheat...
+    (let ((type-list (mapcar #'(lambda (pair)
+				 (make-type-from-string (cdr (assoc :field-type pair))))
+			     alist-name-type-pairs)))
+	(make-instance 'structure-descriptor
+		       :descriptor-alist adesc
+		       :fields type-list))))
+  
 (defun initialize-type-hash (type-hash type-table)
   (dolist (a type-table)
-    (let ((aname (cdr (assoc :name a)))
+    (let ((tyname (make-type-from-string (cdr (assoc :name a))))
 	  (adesc (cdr (assoc :descriptor a))))
       (let ((kind-sym (intern (string-upcase (cdr (assoc :kind adesc))) "KEYWORD")))
 	(let ((desc
 	       (ecase kind-sym
 		 (:string (create-string-descriptor adesc))
 		 (:enum (create-enum-descriptor adesc))
-		 (:structure (create-structure-descriptor adesc)
-		 (:compound (create-compound-descriptor adesc)
+		 (:structure (create-structure-descriptor adesc))
+		 (:compound (create-compound-descriptor adesc))
 		 (:map (create-map-descriptor adesc))
-		 (:bag (create-bag-descriptor adesc)))))))
-	  (setf (gethash aname type-hash) desc)))))
+		 (:bag (create-bag-descriptor adesc)))))
+	  (setf (gethash tyname type-hash) desc)))))
   type-hash)
 
 
@@ -185,3 +191,9 @@ example type alist
       (if field-type-desc
 	  field-type-desc
 	  (%type-check-failure-format "type ~a does not have a field ~a" type-name field-name)))))
+
+(defun make-types-from-string-list (str-list)
+  (mapcar #'make-type-from-string str-list))
+
+(defun make-type-from-string (s)
+  (string-upcase (format nil "~a-type" s)))
