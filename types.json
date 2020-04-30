@@ -39,7 +39,7 @@
       { "kind" : "structure",
 	"fields" : [{"fieldName" : "onName", "fieldType" : "onName"},
 		    {"fieldName" : "statementsBag", "fieldType" : "statementsBag"}]}},
-    { "name" : "machineDescripto",
+    { "name" : "machineDescriptor",
       "descriptor" :
       { "kind" : "structure",
 	"fields" : [{"fieldName" : "name", "fieldType" : "name"},
@@ -82,7 +82,7 @@
     { "name" : "statement",
       "descriptor" :
       { "kind" : "compound", "types" : ["rawExpr", "dollarExpr", "callExpr"]}},
-    { "name" : "EXPR",
+    { "name" : "expr",
       "descriptor" :
       { "kind" : "compound", "types" : ["sendStatement", "callStatement"]}}
 ]
