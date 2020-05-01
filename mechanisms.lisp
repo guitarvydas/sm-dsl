@@ -176,10 +176,11 @@
   (~newscope name))
 
 (defmethod $symbol__GetName ((self sm-dsl-parser))
+  ;; put name onto output stack of "name"
   (let ((str (scanner:token-text (pasm:accepted-token self)))
 	(name-object (make-instance (stack-dsl:lisp-sym "name"))))
     (setf (stack-dsl:%value name-object) str)
-    (stack-dsl:%push (input-name (env self)) name-object)))
+    (stack-dsl:%push (output-name (env self)) name-object)))
 
 (defmethod $name__Output ((self sm-dsl-parser))
   (~output name))

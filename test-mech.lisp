@@ -48,7 +48,6 @@
   (let ((prev-rule (current-rule p)))     (setf (current-rule p) "machineName") (pasm::p-into-trace p)
 (pasm:input p :SYMBOL)
 (pasm:call-external p #'$symbol__GetName)
-(pasm:call-external p #'$name__Output)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
 (defmethod optional-initially ((p pasm:parser))
@@ -100,7 +99,6 @@
   (let ((prev-rule (current-rule p)))     (setf (current-rule p) "stateName") (pasm::p-into-trace p)
 (pasm:input p :SYMBOL)
 (pasm:call-external p #'$symbol__GetName)
-(pasm:call-external p #'$name__Output)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
 (defmethod events ((p pasm:parser))
@@ -131,7 +129,6 @@
   (let ((prev-rule (current-rule p)))     (setf (current-rule p) "eventName") (pasm::p-into-trace p)
 (pasm:input-symbol p "in")
 (pasm:call-external p #'$symbol__GetName)
-(pasm:call-external p #'$name__Output)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
 (defmethod statements ((p pasm:parser))
@@ -329,25 +326,12 @@
 (pasm:call-rule p #'dollarExpr)
 (pasm:call-rule p #'rawExpr)
 (pasm:call-rule p #'rawExpr)
+(pasm:call-rule p #'callExpr)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
 (defmethod runHook ((p pasm:parser))
   (let ((prev-rule (current-rule p)))     (setf (current-rule p) "runHook") (pasm::p-into-trace p)
 (hook-list p 'input-machineDescriptor 'output-machineDescriptor 'input-name 'output-name 'input-dollarExpr 'output-dollarExpr 'input-rawExpr 'output-rawExpr 'input-callExpr 'output-callExpr 'input-expr 'output-expr )
 
-(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
-
-(defmethod machineName ((p pasm:parser))
-  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "machineName") (pasm::p-into-trace p)
-(pasm:input p :SYMBOL)
-(pasm:call-external p #'$symbol__GetName)
-(pasm:call-external p #'$name__Output)
-(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
-
-(defmethod dollarExpr ((p pasm:parser))
-  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "dollarExpr") (pasm::p-into-trace p)
-(pasm:input-char p #\$)
-(pasm:call-external p #'$dollarExpr__NewScope)
-(pasm:call-external p #'$dollarExpr__Output)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 

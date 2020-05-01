@@ -22,7 +22,6 @@
 % machineName << (nothing) >> name
 = machineName
   SYMBOL                           $symbol__GetName
-                                $name__Output
 
 % << (nothing) >> statementsBag
 = optional-initially                                                                    
@@ -58,7 +57,6 @@
 = stateName
     SYMBOL 
                                   $symbol__GetName
-                                $name__Output
 
 % event << (nothing) >> eventsBag
 = events
@@ -79,7 +77,6 @@
 = eventName
     SYMBOL/in  %% in v0 state machines, all input events are called 'in' (hard-wired name)
                                   $symbol__GetName
-                                $name__Output
 
 
 % statements << (nothing) >> statementsBag
@@ -188,7 +185,7 @@
    | * >
   ]}
 
-
+% symbol__GetName >> name
 
 
 
@@ -205,6 +202,7 @@
    @dollarExpr   
    @rawExpr
    @rawExpr
+   @callExpr
 
 
 
@@ -212,13 +210,3 @@
 !(input-machineDescriptor output-machineDescriptor input-name output-name input-dollarExpr output-dollarExpr input-rawExpr output-rawExpr input-callExpr output-callExpr input-expr output-expr)
 
 
-% machineName << (nothing) >> name
-= machineName
-  SYMBOL                           $symbol__GetName
-                                $name__Output
-
-% dollarExpr >> dollarExpr
-= dollarExpr
-  '$'                         
-                               $dollarExpr__NewScope
-                               $dollarExpr__Output			       
