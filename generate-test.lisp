@@ -1,7 +1,7 @@
 (in-package :sm-dsl)
 
-(defparameter *pasm-script* "test-mech.pasm")
-(defparameter *generated-lisp* "test-mech.lisp")
+(defparameter *pasm-script* "sm-dsl.pasm")
+(defparameter *generated-lisp* "sm-dsl.lisp")
 
 (defun generate-test (package-name &optional (given-output-filename nil))
   (let ((output-filename (or given-output-filename (asdf:system-relative-pathname :sm-dsl *generated-lisp*))))

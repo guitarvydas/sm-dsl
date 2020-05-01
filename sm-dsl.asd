@@ -3,7 +3,8 @@
   :components ((:module "source"
                         :pathname "./"
                         :components ((:file "package")
-				     (:file "path" :depends-on ("package"))))))
+				     (:file "path" :depends-on ("package"))
+				     (:file "script" :depends-on ("package" "path"))))))
 
 (defsystem :sm-dsl/generate-stacks
   :depends-on (:sm-dsl)

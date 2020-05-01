@@ -187,3 +187,38 @@
   ]}
 
 
+
+
+
+= smtester
+  ~rmSpaces
+                                $machineDescriptor__NewScope
+   SYMBOL/machine 
+   @machineName                     $machineDescriptor__SetField_name_from_name
+
+                                $machineDescriptor__Output
+   $machineDescriptor__Emit
+
+
+   @runHook
+   @dollarExpr   
+   @runHook
+   @rawExpr
+   @runHook
+
+
+
+= runHook
+!(input-machineDescriptor output-machineDescriptor input-name output-name input-dollarExpr output-dollarExpr input-rawExpr output-rawExpr input-callExpr output-callExpr input-expr output-expr)
+
+
+% machineName << (nothing) >> name
+= machineName
+  SYMBOL                           $symbol__GetName
+                                $name__Output
+
+% dollarExpr >> dollarExpr
+= dollarExpr
+  '$'                         
+                               $dollarExpr__NewScope
+                               $dollarExpr__Output			       

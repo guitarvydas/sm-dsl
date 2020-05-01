@@ -48,48 +48,7 @@
  (ql:quickload :stack-dsl/use)
 #+end_src
 
-* development
-  Development test sequence...
-
-#+name: dsl
-#+begin_src lisp :results output
- (uiop:run-program "rm -rf ~/.cache/common-lisp ;
- rm -rf ~/quicklisp/local-projects/*.fasl ;
- rm -rf ~/quicklisp/local/projects/*~")
- (proclaim '(optimize (debug 3) (safety 3) (speed 0)))
- (declaim (sb-ext:muffle-conditions style-warning))
- (ql:quickload :stack-dsl/generate)
-#+end_src
-
-#+name: dsl
-#+begin_src lisp :results output
- (stack-dsl::generate)
- (ql:quickload :sm-dsl)
- (ql:quickload :sm-dsl/generate-stacks)
-#+end_src
-#+name: dsl
-#+begin_src lisp :results output
-  (declaim (sb-ext:muffle-conditions style-warning))
-  (sm-dsl::generate-stacks)
-  (load (sm-dsl::path "generate-test.lisp"))
- (load (sm-dsl::path "transpile-test.lisp"))
-  (load (sm-dsl::path "stacks.lisp"))
-  (load (sm-dsl::path "classes.lisp"))
-  (load (sm-dsl::path "macros.lisp"))
-  (load (sm-dsl::path "mechanisms.lisp"))
- (sm-dsl::generate-test "SM-DSL" (sm-dsl::path "test-mech.lisp"))
- (load (sm-dsl::path "test-mech.lisp"))
-  (stack-dsl::initialize-types (sm-dsl::path "types.json"))
- #| (inspect (gethash "machineDescriptor" stack-dsl::*type-hash*)) |#
-  (load (sm-dsl::path "trace-mechs.lisp"))
-  (load (sm-dsl::path "trace-rules.lisp"))
-#+end_src
-#| <<to here>> |#
- (let ((pasm:*pasm-accept-tracing* t)(pasm:*pasm-tracing* nil)) (sm-dsl::transpile-test (sm-dsl::path "test-sm.dsl") (sm-dsl::path "test-sm.lisp")))
- (load (sm-dsl::path "test-sm.lisp"))
-
-
-
+* Main (non-dev)
 #+name: dsl
 #+begin_src lisp :results output
  (stack-dsl::generate)
@@ -145,12 +104,100 @@
   (load (sm-dsl::path "transpile.lisp"))
 #+end_src
 
+* development
+  Development test sequence...
+
+  running this as a EVAL script (from a string) allows me to reference packages that
+  not available at compile time, but are loaded during the execution of the script
+#+name: dsl
+#+begin_src lisp :results output
+(proclaim '(optimize (debug 3) (safety 3) (speed 0)))
+(declaim (sb-ext:muffle-conditions style-warning))
+(ql:quickload :sm-dsl)
+(let ((cmds (read-from-string "(
+		 (uiop:run-program \"rm -rf ~/.cache/common-lisp ;
+		  rm -rf ~/quicklisp/local-projects/*.fasl ;
+		  rm -rf ~/quicklisp/local/projects/*~\")
+		 (ql:quickload :stack-dsl/generate)
+		 (stack-dsl::generate)
+		 (ql:quickload :sm-dsl)
+		 (ql:quickload :sm-dsl/generate-stacks)
+		 (sm-dsl::generate-stacks)
+		 (load (sm-dsl::path \"generate-test.lisp\"))
+		 (load (sm-dsl::path \"transpile-test.lisp\"))
+		 (load (sm-dsl::path \"stacks.lisp\"))
+		 (load (sm-dsl::path \"classes.lisp\"))
+		 (load (sm-dsl::path \"macros.lisp\"))
+		 (load (sm-dsl::path \"mechanisms.lisp\"))
+		 (sm-dsl::generate-test \"SM-DSL\" (sm-dsl::path \"test-mech.lisp\"))
+		 (load (sm-dsl::path \"test-mech.lisp\"))
+		 (stack-dsl::initialize-types (sm-dsl::path \"types.json\"))
+		 (load (sm-dsl::path \"trace-mechs.lisp\"))
+		 (load (sm-dsl::path \"trace-rules.lisp\"))
+	   )")))
+    (dolist (cmd cmds)   
+      (format *standard-output* "~%eval ~s" cmd)
+      (eval cmd)))
+		 #| (inspect (gethash "machineDescriptor" stack-dsl::*type-hash*)) |#
+#+end_src
+#+name: dsl
+#+begin_src lisp :results output
+  (declaim (sb-ext:muffle-conditions style-warning))
+#+end_src
+#| <<to here>> |#
+ (let ((pasm:*pasm-accept-tracing* t)(pasm:*pasm-tracing* t)) (sm-dsl::transpile-test (sm-dsl::path "test-sm.dsl") (sm-dsl::path "test-sm.lisp")))
+ (load (sm-dsl::path "test-sm.lisp"))
+
+
 * results
 #+RESULTS: dsl
-: transpiling stacks.dsl...
-: in stack-dsl
-: *** calling initially on stack-dsl-parser
-: *** calling initially on stack-dsl-parser
-: file /home/tarvydas/quicklisp/local-projects/sm-dsl/stacks.lisp written
+#+begin_example
+To load "sm-dsl":
+  Load 1 ASDF system:
+    sm-dsl
+; Loading "sm-dsl"
+
+
+eval (UIOP/RUN-PROGRAM:RUN-PROGRAM "rm -rf ~/.cache/common-lisp ;
+		  rm -rf ~/quicklisp/local-projects/*.fasl ;
+		  rm -rf ~/quicklisp/local/projects/*~")
+eval (QUICKLISP-CLIENT:QUICKLOAD :STACK-DSL/GENERATE)To load "stack-dsl/generate":
+  Load 1 ASDF system:
+    stack-dsl/generate
+; Loading "stack-dsl/generate"
+
+
+eval (STACK-DSL::GENERATE)
+eval (QUICKLISP-CLIENT:QUICKLOAD :SM-DSL)To load "sm-dsl":
+  Load 1 ASDF system:
+    sm-dsl
+; Loading "sm-dsl"
+[package sm-dsl]
+
+eval (QUICKLISP-CLIENT:QUICKLOAD :SM-DSL/GENERATE-STACKS)To load "sm-dsl/generate-stacks":
+  Load 1 ASDF system:
+    sm-dsl/generate-stacks
+; Loading "sm-dsl/generate-stacks"
+
+
+eval (SM-DSL::GENERATE-STACKS)
+transpiling stacks.dsl...
+in stack-dsl
+,*** calling initially on stack-dsl-parser
+,*** calling initially on stack-dsl-parser
+file /home/tarvydas/quicklisp/local-projects/sm-dsl/stacks.lisp written
+
+eval (LOAD (SM-DSL::PATH "generate-test.lisp"))
+eval (LOAD (SM-DSL::PATH "transpile-test.lisp"))
+eval (LOAD (SM-DSL::PATH "stacks.lisp"))
+eval (LOAD (SM-DSL::PATH "classes.lisp"))
+eval (LOAD (SM-DSL::PATH "macros.lisp"))
+eval (LOAD (SM-DSL::PATH "mechanisms.lisp"))
+eval (SM-DSL::GENERATE-TEST "SM-DSL" (SM-DSL::PATH "test-mech.lisp"))
+eval (LOAD (SM-DSL::PATH "test-mech.lisp"))
+eval (STACK-DSL::INITIALIZE-TYPES (SM-DSL::PATH "types.json"))
+eval (LOAD (SM-DSL::PATH "trace-mechs.lisp"))
+eval (LOAD (SM-DSL::PATH "trace-rules.lisp"))
+#+end_example
 
 
