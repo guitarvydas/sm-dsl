@@ -1,0 +1,57 @@
+(in-package "SM-DSL")
+
+(defmethod rmSpaces ((p pasm:parser))
+  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "rmSpaces") (pasm::p-into-trace p)
+(cond
+((pasm:parser-success? (pasm:lookahead? p :SPACE)))
+((pasm:parser-success? (pasm:lookahead? p :COMMENT)))
+( t  (pasm:accept p) 
+)
+)
+
+(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
+
+(defmethod testMech ((p pasm:parser))
+  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "testMech") (pasm::p-into-trace p)
+(pasm::pasm-filter-stream p #'rmSpaces)
+(pasm:call-external p #'$machineDescriptor__NewScope)
+(pasm:input p :SYMBOL)
+(pasm:call-external p #'$symbol__GetName)
+(pasm:call-external p #'$machineDescriptor__SetField_name_from_name)
+(pasm:call-external p #'$machineDescriptor__Output)
+(pasm:call-external p #'$machineDescriptor__Emit)
+(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
+
+(defmethod old-machine ((p pasm:parser))
+  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "old-machine") (pasm::p-into-trace p)
+(pasm::pasm-filter-stream p #'rmSpaces)
+(hook-list p 'input-machineDescriptor 'output-machineDescriptor 'input-name 'output-name )
+
+(pasm:call-external p #'$machineDescriptor__NewScope)
+(pasm:input-symbol p "machine")
+(pasm:call-rule p #'machineName)
+(pasm:call-external p #'$machineDescriptor__SetField_name_from_name)
+(pasm:call-external p #'$machineDescriptor__Output)
+(hook-list p 'input-machineDescriptor 'output-machineDescriptor 'input-name 'output-name )
+
+(pasm:call-external p #'$machineDescriptor__Emit)
+(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
+
+(defmethod smtester ((p pasm:parser))
+  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "smtester") (pasm::p-into-trace p)
+(pasm::pasm-filter-stream p #'rmSpaces)
+(pasm:call-external p #'$machineDescriptor__NewScope)
+(pasm:input-symbol p "machine")
+(pasm:call-rule p #'machineName)
+(pasm:call-external p #'$machineDescriptor__SetField_name_from_name)
+(pasm:call-external p #'$machineDescriptor__Output)
+(pasm:call-external p #'$machineDescriptor__Emit)
+(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
+
+(defmethod machineName ((p pasm:parser))
+  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "machineName") (pasm::p-into-trace p)
+(pasm:input p :SYMBOL)
+(pasm:call-external p #'$symbol__GetName)
+(pasm:call-external p #'$name__Output)
+(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
+

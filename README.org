@@ -49,6 +49,8 @@
 #+end_src
 
 * development
+  Development test sequence...
+
 #+name: dsl
 #+begin_src lisp :results output
  (uiop:run-program "rm -rf ~/.cache/common-lisp ;
@@ -58,6 +60,35 @@
  (declaim (sb-ext:muffle-conditions style-warning))
  (ql:quickload :stack-dsl/generate)
 #+end_src
+
+#+name: dsl
+#+begin_src lisp :results output
+ (stack-dsl::generate)
+ (ql:quickload :sm-dsl)
+ (ql:quickload :sm-dsl/generate-stacks)
+#+end_src
+#+name: dsl
+#+begin_src lisp :results output
+  (declaim (sb-ext:muffle-conditions style-warning))
+  (sm-dsl::generate-stacks)
+  (load (sm-dsl::path "generate-test.lisp"))
+ (load (sm-dsl::path "transpile-test.lisp"))
+  (load (sm-dsl::path "stacks.lisp"))
+  (load (sm-dsl::path "classes.lisp"))
+  (load (sm-dsl::path "macros.lisp"))
+  (load (sm-dsl::path "mechanisms.lisp"))
+ (sm-dsl::generate-test "SM-DSL" (sm-dsl::path "test-mech.lisp"))
+ (load (sm-dsl::path "test-mech.lisp"))
+  (stack-dsl::initialize-types (sm-dsl::path "types.json"))
+ #| (inspect (gethash "machineDescriptor" stack-dsl::*type-hash*)) |#
+  (load (sm-dsl::path "trace-mechs.lisp"))
+  (load (sm-dsl::path "trace-rules.lisp"))
+#+end_src
+#| <<to here>> |#
+ (let ((pasm:*pasm-accept-tracing* t)(pasm:*pasm-tracing* nil)) (sm-dsl::transpile-test (sm-dsl::path "test-sm.dsl") (sm-dsl::path "test-sm.lisp")))
+ (load (sm-dsl::path "test-sm.lisp"))
+
+
 
 #+name: dsl
 #+begin_src lisp :results output
@@ -116,4 +147,10 @@
 
 * results
 #+RESULTS: dsl
+: transpiling stacks.dsl...
+: in stack-dsl
+: *** calling initially on stack-dsl-parser
+: *** calling initially on stack-dsl-parser
+: file /home/tarvydas/quicklisp/local-projects/sm-dsl/stacks.lisp written
+
 

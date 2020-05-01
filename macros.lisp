@@ -47,7 +47,7 @@
 (defun ~out(name) `(,(intern (string-upcase (format nil "output-~a" name))) (env self)))
 
 (defun ~field(fname) (format nil "%field-type-~s" fname))
-(defun ~type(fname) (format nil "~s-TYPE" fname))
+(defun ~type(fname) (stack-dsl:lisp-sym fname))
 
 (defmacro ~output (ty)
   `(progn 
@@ -66,11 +66,11 @@
 
 (defmacro ~set-field (to field-name from)
   ;; set top(input-to).f := output-from, pop from
-  `(let ((val (stack-dsl::%top ,(~out from))))
+  `(let ((val (stack-dsl:%top ,(~out from))))
      (stack-dsl:%ensure-field-type
-      ,(~type to)
+      ,to
       ,field-name
-      (stack-dsl:%type val))
+      val)
      (stack-dsl:%set-field (stack-dsl:%top ,(~in to)) ,field-name val)
      (stack-dsl:%pop ,(~out from))))
 
