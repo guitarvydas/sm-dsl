@@ -129,8 +129,8 @@
 		 (load (sm-dsl::path \"classes.lisp\"))
 		 (load (sm-dsl::path \"macros.lisp\"))
 		 (load (sm-dsl::path \"mechanisms.lisp\"))
-		 (sm-dsl::generate-test \"SM-DSL\" (sm-dsl::path \"test-mech.lisp\"))
-		 (load (sm-dsl::path \"test-mech.lisp\"))
+		 (sm-dsl::generate-test \"SM-DSL\" (sm-dsl::path \"sm-dsl.lisp\"))
+		 (load (sm-dsl::path \"sm-dsl.lisp\"))
 		 (stack-dsl::initialize-types (sm-dsl::path \"types.json\"))
 		 (load (sm-dsl::path \"trace-mechs.lisp\"))
 		 (load (sm-dsl::path \"trace-rules.lisp\"))
@@ -143,8 +143,8 @@
 #| <<to here>> |#
 #| sm-dsl.pasm contains smtester - test scripts |#
 #| test-sm.dsl contains test code |#
- (let ((pasm:*pasm-accept-tracing* t)(pasm:*pasm-tracing* t))
-   (sm-dsl::trace-mechs)
+ (let ((pasm:*pasm-accept-tracing* t)(pasm:*pasm-tracing* nil))
+   #| (sm-dsl::trace-mechs) |#
    (sm-dsl::trace-rules)
    (sm-dsl::transpile-test (sm-dsl::path "test-sm.dsl") (sm-dsl::path "test-sm.lisp")))
  (Load (sm-dsl::path "test-sm.lisp"))
@@ -193,8 +193,8 @@ eval (LOAD (SM-DSL::PATH "stacks.lisp"))
 eval (LOAD (SM-DSL::PATH "classes.lisp"))
 eval (LOAD (SM-DSL::PATH "macros.lisp"))
 eval (LOAD (SM-DSL::PATH "mechanisms.lisp"))
-eval (SM-DSL::GENERATE-TEST "SM-DSL" (SM-DSL::PATH "test-mech.lisp"))
-eval (LOAD (SM-DSL::PATH "test-mech.lisp"))
+eval (SM-DSL::GENERATE-TEST "SM-DSL" (SM-DSL::PATH "sm-dsl.lisp"))
+eval (LOAD (SM-DSL::PATH "sm-dsl.lisp"))
 eval (STACK-DSL::INITIALIZE-TYPES (SM-DSL::PATH "types.json"))
 eval (LOAD (SM-DSL::PATH "trace-mechs.lisp"))
 eval (LOAD (SM-DSL::PATH "trace-rules.lisp"))

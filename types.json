@@ -23,17 +23,17 @@
 	"fields" : [
 	    { "fieldName" : "exprkind", "fieldType" : "exprKind" },
 	    { "fieldName" : "name", "fieldType" : "name" },
-	    { "fieldName" : "exprMap", "fieldType" : "exprMap" }]}},
+	    { "fieldName" : "expressionMap", "fieldType" : "expressionMap" }]}},
     { "name" : "callStatement",
       "descriptor" :
       { "kind" : "structure",
 	"fields" : [{ "fieldName" : "callkind", "fieldType" : "callkind"},
-		    { "fieldName" : "exprMap", "fieldType" : "exprMap" }]}},
+		    { "fieldName" : "expressionMap", "fieldType" : "expressionMap" }]}},
     { "name" : "sendStatement",
       "descriptor" :
       { "kind" : "structure",
 	"fields" : [{"fieldName" : "callkind", "fieldType" : "callKind"},
-		    { "fieldName" : "expr", "fieldType" : "expr"}]}},
+		    { "fieldName" : "expression", "fieldType" : "expression"}]}},
     { "name" : "event",
       "descriptor" :
       { "kind" : "structure",
@@ -61,9 +61,9 @@
       { "kind" : "structure",
 	"fields" : [{"fieldName" : "exprkind", "fieldType" : "exprkind"},
 		    {"fieldName" : "name", "fieldType" : "name"}]}},
-    { "name" : "exprMap",
+    { "name" : "expressionMap",
       "descriptor" :
-      { "kind" : "map", "elementType" : "expr" }},
+      { "kind" : "map", "elementType" : "expression" }},
     { "name" : "pipeline",
       "descriptor" :
       { "kind" : "map", "elementType" : "name" }},
@@ -82,7 +82,7 @@
     { "name" : "statement",
       "descriptor" :
       { "kind" : "compound", "types" : ["rawExpr", "dollarExpr", "callExpr"]}},
-    { "name" : "expr",
+    { "name" : "expression",
       "descriptor" :
       { "kind" : "compound", "types" : ["sendStatement", "callStatement"]}}
 ]

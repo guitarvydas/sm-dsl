@@ -171,7 +171,7 @@
 (pasm:call-external p #'$symbol__GetName)
 (pasm:call-external p #'$statement__SetField_name_from_name)
 (pasm:call-rule p #'optionalParameters)
-(pasm:call-external p #'$statement__SetField_argsfrom_exprMap)
+(pasm:call-external p #'$statement__SetField_argsfrom_expressionMap)
 (pasm:call-external p #'$callStatement__Output)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
@@ -179,13 +179,13 @@
   (let ((prev-rule (current-rule p)))     (setf (current-rule p) "expr") (pasm::p-into-trace p)
 (cond
 ((pasm:parser-success? (pasm:lookahead-char? p #\$))(pasm:call-rule p #'dollarExpr)
-(pasm:call-external p #'$dollarExpr__MoveTo_expr)
+(pasm:call-external p #'$dollarExpr__MoveTo_expression)
 )
 ((pasm:parser-success? (pasm:lookahead-char? p #\{))(pasm:call-rule p #'rawExpr)
-(pasm:call-external p #'$rawExpr__MoveTo_expr)
+(pasm:call-external p #'$rawExpr__MoveTo_expression)
 )
 ((pasm:parser-success? (pasm:call-predicate p #'callableSymbol))(pasm:call-rule p #'callExpr)
-(pasm:call-external p #'$callExpr__MoveTo_expr)
+(pasm:call-external p #'$callExpr__MoveTo_expression)
 )
 ( t (pasm:call-external p #'$expr__NewScope)
 )
@@ -236,7 +236,7 @@
 (hook-list p 'input-name 'output-name )
 
 (pasm:call-rule p #'optionalParameters)
-(pasm:call-external p #'$callExpr__SetField_exprMap_from_exprMap)
+(pasm:call-external p #'$callExpr__SetField_expressionMap_from_expressionMap)
 (pasm:call-external p #'$callExpr__Output)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
@@ -255,7 +255,7 @@
 
 (defmethod optionalParameters ((p pasm:parser))
   (let ((prev-rule (current-rule p)))     (setf (current-rule p) "optionalParameters") (pasm::p-into-trace p)
-(pasm:call-external p #'$exprMap__NewScope)
+(pasm:call-external p #'$expressionMap__NewScope)
 (cond
 ((pasm:parser-success? (pasm:lookahead-char? p #\())(pasm:input-char p #\()
 (pasm:call-rule p #'parameters)
@@ -264,7 +264,7 @@
 ( t )
 )
 
-(pasm:call-external p #'$exprMap__Output)
+(pasm:call-external p #'$expressionMap__Output)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
 (defmethod parameters ((p pasm:parser))
@@ -272,13 +272,13 @@
 (loop
 (cond
 ((pasm:parser-success? (pasm:lookahead-char? p #\$))(pasm:input-char p #\$)
-(pasm:call-rule p #'expr)
-(pasm:call-external p #'$exprMap__AppendFrom_expr)
+(pasm:call-rule p #'expression)
+(pasm:call-external p #'$expressionMap__AppendFrom_expr)
 )
 ((pasm:parser-success? (pasm:lookahead-char? p #\)))(return)
 )
-((pasm:parser-success? (pasm:lookahead? p :SYMBOL))(pasm:call-rule p #'expr)
-(pasm:call-external p #'$exprMap__AppendFrom_expr)
+((pasm:parser-success? (pasm:lookahead? p :SYMBOL))(pasm:call-rule p #'expression)
+(pasm:call-external p #'$expressionMap__AppendFrom_expr)
 )
 )
 
@@ -317,15 +317,7 @@
 (defmethod smtester ((p pasm:parser))
   (let ((prev-rule (current-rule p)))     (setf (current-rule p) "smtester") (pasm::p-into-trace p)
 (pasm::pasm-filter-stream p #'rmSpaces)
-(pasm:call-external p #'$machineDescriptor__NewScope)
-(pasm:input-symbol p "machine")
-(pasm:call-rule p #'machineName)
-(pasm:call-external p #'$machineDescriptor__SetField_name_from_name)
-(pasm:call-external p #'$machineDescriptor__Output)
-(pasm:call-external p #'$machineDescriptor__Emit)
-(pasm:call-rule p #'dollarExpr)
-(pasm:call-rule p #'rawExpr)
-(pasm:call-rule p #'rawExpr)
+(pasm:call-rule p #'callExpr)
 (pasm:call-rule p #'callExpr)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 

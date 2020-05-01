@@ -51,7 +51,7 @@
 
 (defmacro ~output (ty)
   `(progn 
-     (stack-dsl:%output ,(~in ty) ,(~out ty))
+     (stack-dsl:%output ,(~out ty) ,(~in ty))
      (stack-dsl:%pop ,(~in ty))))
 
 (defmacro ~newscope (ty)
@@ -60,8 +60,9 @@
 (defmacro ~append (stack1 stack2)
   `(let ((val (stack-dsl:%top ,(~out stack2))))
      (stack-dsl:%ensure-appendable-type ,(~in stack1))
-     (stack-dsl:%ensure-type (stack-dsl::%top ,(~in stack1)) val)
-     (stack-dsl::%append ,(~in stack1) val)
+     (stack-dsl:%ensure-type (stack-dsl:%element-type 
+			      (stack-dsl:%top ,(~in stack1))) val)
+     (stack-dsl::%append (stack-dsl:%top ,(~in stack1)) val)
      (stack-dsl:%pop ,(~out stack2))))
 
 (defmacro ~set-field (to field-name from)
@@ -74,10 +75,3 @@
      (stack-dsl:%set-field (stack-dsl:%top ,(~in to)) ,field-name val)
      (stack-dsl:%pop ,(~out from))))
 
-(defmacro ~moveOutput (to from)
-  ;; push(top(output-from)) onto output-to
-  ;; keep existing type - used for emission
-  `(let ((val (stack-dsl:%top ,(~out from))))
-     (stack-dsl::%ensure-type (stack-dsl::%top ,(~out from)))
-     (stack-dsl::%push val ,(~out to))
-     (stack-dsl::%pop      ,(~out from))))

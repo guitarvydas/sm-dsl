@@ -1,5 +1,3 @@
-machine testSymbol
-$
-{abc}
-{def {g h i} lmn}
-func
+fn1
+fn2(a)
+

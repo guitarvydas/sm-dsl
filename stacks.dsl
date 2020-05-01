@@ -8,12 +8,12 @@ onName = :string
 
 statementsBag = :bag statement
 statement = | sendStatement | callStatement
-sendStatement = { callkind='send' expr }
-callStatement = { callkind='call' exprMap }
-exprMap = :map expr
-expr = | rawExpr | dollarExpr | callExpr
+sendStatement = { callkind='send' expression }
+callStatement = { callkind='call' expressionMap }
+expressionMap = :map expression
+expression = | rawExpr | dollarExpr | callExpr
 dollarExpr = { exprkind='dollar' name }
-callExpr = { exprkind='function' name exprMap }
+callExpr = { exprkind='function' name expressionMap }
 rawExpr = { exprkind='raw' rawText }
 rawText = :string
 name = :string

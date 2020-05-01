@@ -8,6 +8,6 @@
     (pasm:pasm-to-file package-name
 		       (asdf:system-relative-pathname :sm-dsl *pasm-script*)
 		       output-filename)
-    (format nil "generated ~a" *generated-lisp*)))
+    (format nil "generated ~a" output-filename)))
 
 

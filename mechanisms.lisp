@@ -1,5 +1,12 @@
 (in-package :sm-dsl)
 
+(defun receiveOutput (to-stack from-stack)
+  ;; push(top(output-from)) onto input-to, e.g. callExpr -> expression
+  ;; keep existing type - used for emission
+  (let ((val (stack-dsl:%top from-stack)))
+    (stack-dsl::%ensure-type (stack-dsl:%element-type to-stack) val)
+    (stack-dsl::%push to-stack val)
+    (stack-dsl::%pop from-stack)))
 
 ;; machineDescriptor
 (defmethod $machineDescriptor__NewScope ((self sm-dsl-parser))
@@ -86,22 +93,22 @@
 (defmethod $event__SetField_code_from_statementsBag ((self sm-dsl-parser))
   (~set-field "event" "code" statementsBag))
 
-;; exprMap
-(defmethod $exprMap__NewScope ((self sm-dsl-parser))
-  (~newscope exprMap))
+;; expressionMap
+(defmethod $expressionMap__NewScope ((self sm-dsl-parser))
+  (~newscope expressionMap))
 
-(defmethod $exprMap__Output ((self sm-dsl-parser))
-  (~output exprMap))
+(defmethod $expressionMap__Output ((self sm-dsl-parser))
+  (~output expressionMap))
 
-(defmethod $exprMap__AppendFrom_expr ((self sm-dsl-parser))
-  (~append exprMap expr))
+(defmethod $expressionMap__AppendFrom_expression ((self sm-dsl-parser))
+  (~append expressionMap expression))
 
 ;; expr
-(defmethod $expr__NewScope ((self sm-dsl-parser))
-  (~newscope expr))
+(defmethod $expression__NewScope ((self sm-dsl-parser))
+  (~newscope expression))
 
-(defmethod $expr__Output ((self sm-dsl-parser))
-  (~output expr))
+(defmethod $expression__Output ((self sm-dsl-parser))
+  (~output expression))
 
 ;; dollar expr
 (defmethod $dollarExpr__NewScope ((self sm-dsl-parser))
@@ -110,8 +117,13 @@
 (defmethod $dollarExpr__Output ((self sm-dsl-parser))
   (~output dollarExpr))
 
-(defmethod $dollarExpr__MoveTo_expr ((self sm-dsl-parser))
-  (~moveOutput expr dollarExpr))
+#+nil(defmethod $dollarExpr__MoveTo_expression ((self sm-dsl-parser))
+  (moveOutput (output-expression (env self))
+	      (output-dollarExpr (env self))))
+
+(defmethod $dollarExpr__PushTo_expression ((self sm-dsl-parser))
+  (receiveOutput (input-expression (env self))
+	      (output-dollarExpr (env self))))
 
 ;; call expr
 (defmethod $callExpr__NewScope ((self sm-dsl-parser))
@@ -120,14 +132,19 @@
 (defmethod $callExpr__Output ((self sm-dsl-parser))
   (~output callExpr))
 
-(defmethod $callExpr__MoveTo_expr ((self sm-dsl-parser))
-  (~moveOutput expr callExpr))
+#+nil(defmethod $callExpr__MoveTo_expression ((self sm-dsl-parser))
+  (moveOutput (output-expression (env self))
+	      (output-callExpr (env self))))
+
+(defmethod $callExpr__PushTo_expression ((self sm-dsl-parser))
+  (receiveOutput (input-expression (env self))
+	      (output-callExpr (env self))))
 
 (defmethod $callExpr__SetField_name_from_name ((self sm-dsl-parser))
   (~set-field "callExpr" "name" name))
 
-(defmethod $callExpr__SetField_exprMap_from_exprMap ((self sm-dsl-parser))
-  (~set-field "callExpr" "exprMap" exprMap))
+(defmethod $callExpr__SetField_expressionMap_from_expressionMap ((self sm-dsl-parser))
+  (~set-field "callExpr" "expressionMap" expressionMap))
 
 ;; raw Exprs
 (defmethod $rawExpr__NewScope ((self sm-dsl-parser))
@@ -153,9 +170,10 @@
       (setf (rawText r2) 
 	    (concatenate 'string (rawText r2) (rawText r1))))))
 
-(defmethod $rawExpr__MoveTo_expr ((self sm-dsl-parser))
+(defmethod $rawExpr__PushTo_expression ((self sm-dsl-parser))
   ;; output-expr.push(output-rawExpr.top) ; output-rawExpr.pop
-  (~moveOutput expr rawExpr))
+  (receiveOutput (input-expression (env self))
+	      (output-rawExpr (env self))))
 
 ;; pipeline
 (defmethod $pipeline__NewScope ((self sm-dsl-parser))
@@ -193,7 +211,8 @@
   (~output callStatement))
 
 (defmethod $callStatement__CoerceTo_statement ((self sm-dsl-parser))
-  (~moveOutput callStatement statement))
+  (moveOutput (output-statement (env self))
+	      (output-callStatement (env self))))
 
 (defmethod hook-list ((p parser) &rest args)
   (format *standard-output* "~&hook: ")
@@ -235,8 +254,8 @@
     (:output-callkind (output-callkind (env self)))
     (:input-expr (input-expr (env self)))
     (:output-expr (output-expr (env self)))
-    (:input-exprMap (input-exprMap (env self)))
-    (:output-exprMap (output-exprMap (env self)))
+    (:input-expressionMap (input-expressionMap (env self)))
+    (:output-expressionMap (output-expressionMap (env self)))
     (:input-rawExpr (input-rawExpr (env self)))
     (:output-rawExpr (output-rawExpr (env self)))
     (:input-dollarExpr (input-dollarExpr (env self)))

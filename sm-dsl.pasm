@@ -101,19 +101,20 @@
 = callStatement
                                 $callStatement__NewScope
   SYMBOL                          $symbol__GetName $statement__SetField_name_from_name
-  @optionalParameters             $statement__SetField_argsfrom_exprMap
+  @optionalParameters             $statement__SetField_argsfrom_expressionMap
                                 $callStatement__Output
 
 
 
 % expr << (nothing) >> expr
 = expr
-  [ ?'$' @dollarExpr              $dollarExpr__MoveTo_expr
-  | ?'{' @rawExpr                 $rawExpr__MoveTo_expr
-  | &callableSymbol @callExpr     $callExpr__MoveTo_expr
-  | *                             $expr__NewScope
+  [ ?'$' @dollarExpr              $dollarExpr__PushTo_expression
+  | ?'{' @rawExpr                 $rawExpr__PushTo_expression
+  | &callableSymbol @callExpr     $callExpr__PushTo_expression
+  | *                             $expression__NewScope
   ]
-                                $expr__Output
+                                $expression__Output
+				
 % dollarExpr >> dollarExpr
 = dollarExpr
   '$'                         
@@ -140,7 +141,7 @@
                                 $callExpr__SetField_name_from_name
 !(input-name output-name)				
   @optionalParameters
-                                $callExpr__SetField_exprMap_from_exprMap
+                                $callExpr__SetField_expressionMap_from_expressionMap
 			      $callExpr__Output
 
 % callableSymbol parse-time predicate >> Boolean
@@ -150,24 +151,24 @@
   | *           ^fail
   ]
 
-% optionalParameters >> exprMap
+% optionalParameters >> expressionMap
 = optionalParameters
-                                $exprMap__NewScope
+                                $expressionMap__NewScope
   [ ?'('
     '('
     @parameters
     ')'
   | *
   ]
-                                $exprMap__Output
+                                $expressionMap__Output
 
-% parameters <<>> exprMap
+% parameters <<>> expressionMap
 = parameters
   {[ ?'$'   '$' 
-        @expr                     $exprMap__AppendFrom_expr
+        @expr                     $expressionMap__AppendFrom_expression
    | ?')' >
    | ?SYMBOL                    
-     @expr                        $exprMap__AppendFrom_expr
+     @expr                        $expressionMap__AppendFrom_expression
   ]}
 
 % pipeline >> pipeline
@@ -191,17 +192,7 @@
 
 = smtester
   ~rmSpaces
-                                $machineDescriptor__NewScope
-   SYMBOL/machine 
-   @machineName                     $machineDescriptor__SetField_name_from_name
-
-                                $machineDescriptor__Output
-   $machineDescriptor__Emit
-
-
-   @dollarExpr   
-   @rawExpr
-   @rawExpr
+   @callExpr
    @callExpr
 
 
