@@ -327,6 +327,8 @@
 (pasm:call-rule p #'runHook)
 (pasm:call-rule p #'rawExpr)
 (pasm:call-rule p #'runHook)
+(pasm:call-rule p #'rawExpr)
+(pasm:call-rule p #'runHook)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
 (defmethod runHook ((p pasm:parser))
