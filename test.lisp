@@ -53,8 +53,8 @@
   #+nil(let ((str "$"))
     (transpile-snippet str 'dollarExpr))
 
-  #+nil(let ((str "a"))
+  (let ((str "a"))
     (transpile-snippet str 'callExpr))
-  (let ((str "a(b)"))
+  #+nil(let ((str "a(b)"))
     (transpile-snippet str 'callExpr))
 )
