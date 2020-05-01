@@ -1,1 +1,3 @@
 machine testSymbol
+$
+{abc}

@@ -1,2 +1,2 @@
-mdo=#<MACHINEDESCRIPTOR {10046D7F03}>
+mdo=#<MACHINEDESCRIPTOR {10048FFE33}>
 mdo.name.value="testSymbol"

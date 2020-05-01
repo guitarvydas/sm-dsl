@@ -46,6 +46,17 @@
 (pasm:call-external p #'$machineDescriptor__SetField_name_from_name)
 (pasm:call-external p #'$machineDescriptor__Output)
 (pasm:call-external p #'$machineDescriptor__Emit)
+(pasm:call-rule p #'runHook)
+(pasm:call-rule p #'dollarExpr)
+(pasm:call-rule p #'runHook)
+(pasm:call-rule p #'rawExpr)
+(pasm:call-rule p #'runHook)
+(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
+
+(defmethod runHook ((p pasm:parser))
+  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "runHook") (pasm::p-into-trace p)
+(hook-list p 'input-machineDescriptor 'output-machineDescriptor 'input-name 'output-name 'input-dollarExpr 'output-dollarExpr 'input-rawExpr 'output-rawExpr 'input-callExpr 'output-callExpr 'input-expr 'output-expr )
+
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
 (defmethod machineName ((p pasm:parser))
@@ -53,5 +64,36 @@
 (pasm:input p :SYMBOL)
 (pasm:call-external p #'$symbol__GetName)
 (pasm:call-external p #'$name__Output)
+(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
+
+(defmethod dollarExpr ((p pasm:parser))
+  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "dollarExpr") (pasm::p-into-trace p)
+(pasm:input-char p #\$)
+(pasm:call-external p #'$dollarExpr__NewScope)
+(pasm:call-external p #'$dollarExpr__Output)
+(setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
+
+(defmethod rawExpr ((p pasm:parser))
+  (let ((prev-rule (current-rule p)))     (setf (current-rule p) "rawExpr") (pasm::p-into-trace p)
+(pasm:call-external p #'$rawExpr__NewScope)
+(pasm:input-char p #\{)
+(pasm:call-external p #'$rawExpr__StringAppend_rawText)
+(loop
+(cond
+((pasm:parser-success? (pasm:lookahead-char? p #\{))(pasm:call-rule p #'rawExpr)
+(pasm:call-external p #'$rawExpr__Join)
+)
+((pasm:parser-success? (pasm:lookahead-char? p #\}))(return)
+)
+( t  (pasm:accept p) 
+(pasm:call-external p #'$rawExpr__StringAppend_rawText)
+)
+)
+
+)
+
+(pasm:input-char p #\})
+(pasm:call-external p #'$rawExpr__StringAppend_rawText)
+(pasm:call-external p #'$rawExpr__Output)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
