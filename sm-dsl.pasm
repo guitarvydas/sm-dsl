@@ -13,8 +13,8 @@
 % machine << (nothing) >> machineDescriptor
 = machine
                                 $machineDescriptor__NewScope
-   SYMBOL/machine                   $machineDescriptor__SetField_name_from_name
-   @machineName                 
+   SYMBOL/machine
+   @machineName                     $machineDescriptor__SetField_name_from_name
    @optional-initially              $machineDescriptor__SetField_initiallyDescriptor_from_StatementsBag
    @states                          $machine__SetField_states_from_StatesBag
   SYMBOL/end SYMBOL/machine
