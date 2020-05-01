@@ -141,9 +141,13 @@
 		 #| (inspect (gethash "machineDescriptor" stack-dsl::*type-hash*)) |#
 #+end_src
 #| <<to here>> |#
-#| test-sm.dsl contains test scripts - transpiled using test-mech.lisp above (transpiled from sm-dsl.pasm) #|
- (let ((pasm:*pasm-accept-tracing* t)(pasm:*pasm-tracing* t)) (sm-dsl::transpile-test (sm-dsl::path "test-sm.dsl") (sm-dsl::path "test-sm.lisp")))
- (load (sm-dsl::path "test-sm.lisp"))
+#| sm-dsl.pasm contains smtester - test scripts |#
+#| test-sm.dsl contains test code |#
+ (let ((pasm:*pasm-accept-tracing* t)(pasm:*pasm-tracing* t))
+   (sm-dsl::trace-mechs)
+   (sm-dsl::trace-rules)
+   (sm-dsl::transpile-test (sm-dsl::path "test-sm.dsl") (sm-dsl::path "test-sm.lisp")))
+ (Load (sm-dsl::path "test-sm.lisp"))
 
 * results
 #+RESULTS: dsl

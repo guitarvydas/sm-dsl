@@ -233,7 +233,11 @@
 (pasm:call-external p #'$callExpr__NewScope)
 (pasm:input p :SYMBOL)
 (pasm:call-external p #'$symbol__GetName)
+(hook-list p 'input-name 'output-name )
+
 (pasm:call-external p #'$callExpr__SetField_name_from_name)
+(hook-list p 'input-name 'output-name )
+
 (pasm:call-rule p #'optionalParameters)
 (pasm:call-external p #'$callExpr__SetField_exprMap_from_exprMap)
 (pasm:call-external p #'$callExpr__Output)
@@ -322,13 +326,9 @@
 (pasm:call-external p #'$machineDescriptor__SetField_name_from_name)
 (pasm:call-external p #'$machineDescriptor__Output)
 (pasm:call-external p #'$machineDescriptor__Emit)
-(pasm:call-rule p #'runHook)
 (pasm:call-rule p #'dollarExpr)
-(pasm:call-rule p #'runHook)
 (pasm:call-rule p #'rawExpr)
-(pasm:call-rule p #'runHook)
 (pasm:call-rule p #'rawExpr)
-(pasm:call-rule p #'runHook)
 (setf (current-rule p) prev-rule) (pasm::p-return-trace p)))
 
 (defmethod runHook ((p pasm:parser))

@@ -139,7 +139,9 @@
                               $callExpr__NewScope
   SYMBOL
                                 $symbol__GetName
+!(input-name output-name)				
                                 $callExpr__SetField_name_from_name
+!(input-name output-name)				
   @optionalParameters
                                 $callExpr__SetField_exprMap_from_exprMap
 			      $callExpr__Output
@@ -200,13 +202,9 @@
    $machineDescriptor__Emit
 
 
-   @runHook
    @dollarExpr   
-   @runHook
    @rawExpr
-   @runHook
    @rawExpr
-   @runHook
 
 
 

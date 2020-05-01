@@ -1,4 +1,5 @@
 machine testSymbol
 $
 {abc}
-{abd {d e f} ghi}
+{def {g h i} lmn}
+func

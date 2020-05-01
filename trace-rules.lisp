@@ -1,6 +1,6 @@
 (in-package :sm-dsl)
 
-(defun trace-all-rules ()
+(defun trace-rules ()
   (trace rmSpaces)
   (trace statemachine0)
   (trace machine)

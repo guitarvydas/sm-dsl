@@ -140,9 +140,9 @@
 (defmethod $rawExpr__StringAppend_rawText ((self sm-dsl-parser))
   (let ((r (stack-dsl:%top (input-rawExpr (env self)))))
     (let ((text (scanner:token-text (pasm:accepted-token self))))
-      (if (characterp text)
-	  (setf (rawText r) (concatenate 'string (rawText r) (string text)))
-	  (setf (rawText r) (concatenate 'string (rawText r) text))))))
+      (if (eq :character (scanner:token-kind (pasm:accepted-token self)))
+	  (setf (rawText r) (concatenate 'string (rawText r) " " (string text) " "))
+	  (setf (rawText r) (concatenate 'string (rawText r) " " text " "))))))
 
 (defmethod $rawExpr__Join ((self sm-dsl-parser))
   ;; consume 1 rawExprs from output, >> modify input rawExp
