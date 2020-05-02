@@ -8,7 +8,7 @@ onName = :string
 
 statementsMap = :map statement
 statement = | sendStatement | callStatement
-sendStatement = { callkind='send' expression }
+sendStatement = { callkind='send' name expression }
 callStatement = { callkind='call' name expressionMap }
 expressionMap = :map expression
 expression = | rawExpr | dollarExpr | callExpr

@@ -34,6 +34,7 @@
       "descriptor" :
       { "kind" : "structure",
 	"fields" : [{"fieldName" : "callkind", "fieldType" : "callKind"},
+		    { "fieldName" : "name",       "fieldType" : "name"},
 		    { "fieldName" : "expression", "fieldType" : "expression"}]}},
     { "name" : "event",
       "descriptor" :
@@ -44,7 +45,7 @@
       "descriptor" :
       { "kind" : "structure",
 	"fields" : [{"fieldName" : "name", "fieldType" : "name"},
-		    {"fieldName" : "initiallyDescriptor", "fieldType" : "inititallyDescriptor"},
+		    {"fieldName" : "initiallyDescriptor", "fieldType" : "initiallyDescriptor"},
 		    {"fieldName" : "statesBag", "fieldType" : "statesBag"},
 		    {"fieldName" : "pipeline", "fieldType" : "pipeline"}]}},
     { "name" : "state",

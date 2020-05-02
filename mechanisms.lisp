@@ -15,11 +15,11 @@
 (defmethod $machineDescriptor__SetField_pipeline_from_pipeline ((self sm-dsl-parser))
   (~set-field "machineDescriptor" "pipeline" pipeline))
 
-(defmethod $machineDescriptor__SetField_initiallyDescriptor_from_StatementsBag ((self sm-dsl-parser))
-  (~set-field "machineDescriptor" "initiallyDescriptor" statementsBag))
+(defmethod $machineDescriptor__SetField_initiallyDescriptor_from_StatementsMap ((self sm-dsl-parser))
+  (~set-field "machineDescriptor" "initiallyDescriptor" statementsMap))
 
-(defmethod $machineDescriptor__SetField_states_from_StatementsBag ((self sm-dsl-parser))
-  (~set-field "machineDescriptor" "states" statementsBag))
+(defmethod $machineDescriptor__SetField_statesBag_from_statesBag ((self sm-dsl-parser))
+  (~set-field "machineDescriptor" "statesBag" statesBag))
 
 (defmethod $machineDescriptor__SetField_name_from_name ((self sm-dsl-parser))
   (~set-field "machineDescriptor" "name" name))
@@ -243,8 +243,11 @@
   (receiveOutput (output-statement (env self))
 		 (output-sendStatement (env self))))
 
-(defmethod $sendStatement__SetField_arg_from_expression ((self sm-dsl-parser))
-  (~set-field "sendStatement" "arg" expression))
+(defmethod $sendStatement__SetField_expression_from_expression ((self sm-dsl-parser))
+  (~set-field "sendStatement" "expression" expression))
+
+(defmethod $sendStatement__SetField_name_from_name ((self sm-dsl-parser))
+  (~set-field "sendStatement" "name" name))
 
 
 (defmethod hook-list ((p parser) &rest args)

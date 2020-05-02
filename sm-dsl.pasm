@@ -10,13 +10,23 @@
   @pipeline                    $machineDescriptor__SetField_pipeline_from_pipeline
                                $machineDescriptor__Emit
 
+- keywrd
+  [ ?SYMBOL/machine ^ok
+  | ?SYMBOL/end ^ok
+  | ?SYMBOL/initially ^ok
+  | ?SYMBOL/state ^ok
+  | ?SYMBOL/on ^ok
+  | ?SYMBOL/send ^ok
+  | * ^fail
+  ]
+  
 % machine << (nothing) >> machineDescriptor
 = machine
                                 $machineDescriptor__NewScope
    SYMBOL/machine
    @machineName                     $machineDescriptor__SetField_name_from_name
    @optionalInitially              $machineDescriptor__SetField_initiallyDescriptor_from_StatementsMap
-   @states                          $machine__SetField_states_from_StatesBag
+   @states                          $machineDescriptor__SetField_statesBag_from_StatesBag
   SYMBOL/end SYMBOL/machine
                                 $machineDescriptor__Output
 % machineName << (nothing) >> name
@@ -93,7 +103,9 @@
 = sendStatement
   SYMBOL/send
                                 $sendStatement__NewScope
-  @statemachine0Expr               $statement__SetField_arg_from_expression
+  SYMBOL                          $symbol__GetName
+                                  $sendStatement__SetField_name_from_name
+  @expr                           $sendStatement__SetField_expression_from_expression
                                 $sendStatement__Output
 
 % callStatement << (nothing) >> statement
@@ -109,8 +121,8 @@
 = expr
   [ ?'$' @dollarExpr              $dollarExpr__PushTo_expression
   | ?'{' @rawExpr                 $rawExpr__PushTo_expression
-  | &callableSymbol @callExpr     $callExpr__PushTo_expression
-  | *                             $expression__NewScope
+  | &keywrd                       $expression__NewScope
+  | * @callExpr                   $callExpr__PushTo_expression
   ]
                                 $expression__Output
 				
@@ -191,7 +203,9 @@
 
 = smtester
   ~rmSpaces
-   @states
+   @sendStatement
+   @sendStatement
+
 
 
 
