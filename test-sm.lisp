@@ -1,3 +1,11 @@
-machine consumer
-machine producer
-(pipeline 'producer 'b 'c )
+(defclass consumer (%sm) () )
+(defmethod initialize-instance :after ((self consumer))
+  (setf (%state self) :idle))
+(defmethod react ((self consumer) msg)
+)
+(defclass producer (%sm) () )
+(defmethod initialize-instance :after ((self producer))
+  (setf (%state self) :idle))
+(defmethod react ((self producer) msg)
+)
+(pipeline 'producer 'consumer )

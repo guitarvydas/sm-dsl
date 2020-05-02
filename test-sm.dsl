@@ -9,5 +9,5 @@ machine consumer
 end machine
 
 pipeline
-  producer | b | c
+  producer | consumer
 end pipeline
