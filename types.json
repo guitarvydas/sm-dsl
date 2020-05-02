@@ -22,12 +22,12 @@
       { "kind" : "structure",
 	"fields" : [
 	    { "fieldName" : "exprkind", "fieldType" : "exprKind" },
-	    { "fieldName" : "name", "fieldType" : "name" },
 	    { "fieldName" : "expressionMap", "fieldType" : "expressionMap" }]}},
     { "name" : "callStatement",
       "descriptor" :
       { "kind" : "structure",
 	"fields" : [{ "fieldName" : "callkind", "fieldType" : "callkind"},
+		    { "fieldName" : "name", "fieldType" : "name" },
 		    { "fieldName" : "expressionMap", "fieldType" : "expressionMap" }]}},
     { "name" : "sendStatement",
       "descriptor" :
@@ -38,7 +38,7 @@
       "descriptor" :
       { "kind" : "structure",
 	"fields" : [{"fieldName" : "onName", "fieldType" : "onName"},
-		    {"fieldName" : "statementsBag", "fieldType" : "statementsBag"}]}},
+		    {"fieldName" : "statementsMap", "fieldType" : "statementsMap"}]}},
     { "name" : "machineDescriptor",
       "descriptor" :
       { "kind" : "structure",
@@ -67,7 +67,7 @@
     { "name" : "pipeline",
       "descriptor" :
       { "kind" : "map", "elementType" : "name" }},
-    { "name" : "statementsBag",
+    { "name" : "statementsMap",
       "descriptor" :
       { "kind" : "bag", "elementType" : "statement" }},
     { "name" : "eventsBag",

@@ -1,7 +1,7 @@
 (in-package :sm-dsl)
 
 (defun receiveOutput (to-stack from-stack)
-  ;; push(top(output-from)) onto input-to, e.g. callExpr -> expression
+  ;; push(top(output-from)) onto input/output-to, e.g. callExpr -> expression
   ;; keep existing type - used for emission
   (let ((val (stack-dsl:%top from-stack)))
     (stack-dsl::%ensure-type (stack-dsl:%element-type to-stack) val)
@@ -33,15 +33,15 @@
     (pasm:emit-string self "~&mdo.name.value=~s~%" (stack-dsl:%value (name mdo)))))
 
 
-;; statementsBag
-(defmethod $statementsBag__NewScope ((self sm-dsl-parser))
-  (~newscope statementsBag))
+;; statementsMap
+(defmethod $statementsMap__NewScope ((self sm-dsl-parser))
+  (~newscope statementsMap))
 
-(defmethod $statementsBag__AppendFrom_statement ((self sm-dsl-parser))
-  (~append statementsBag statement))
+(defmethod $statementsMap__AppendFrom_statement ((self sm-dsl-parser))
+  (~append statementsMap statement))
 
-(defmethod $statementsBag__Output ((self sm-dsl-parser))
-  (~output statementsBag))
+(defmethod $statementsMap__Output ((self sm-dsl-parser))
+  (~output statementsMap))
 
 ;; statesBag
 (defmethod $statesBag__NewScope ((self sm-dsl-parser))
@@ -90,8 +90,8 @@
 (defmethod $event__Output ((self sm-dsl-parser))
   (~output event))
 
-(defmethod $event__SetField_code_from_statementsBag ((self sm-dsl-parser))
-  (~set-field "event" "code" statementsBag))
+(defmethod $event__SetField_code_from_statementsMap ((self sm-dsl-parser))
+  (~set-field "event" "code" statementsMap))
 
 ;; expressionMap
 (defmethod $expressionMap__NewScope ((self sm-dsl-parser))
@@ -211,8 +211,29 @@
   (~output callStatement))
 
 (defmethod $callStatement__CoerceTo_statement ((self sm-dsl-parser))
-  (moveOutput (output-statement (env self))
+  (receiveOutput (output-statement (env self))
 	      (output-callStatement (env self))))
+
+(defmethod $callStatement__SetField_name_from_name ((self sm-dsl-parser))
+  (~set-field "callStatement" "name" name))
+
+(defmethod $callStatement__SetField_expressionMap_from_expressionMap ((self sm-dsl-parser))
+  (~set-field "callStatement" "expressionMap" expressionMap))
+
+;; send statement
+(defmethod $sendStatement__NewScope ((self sm-dsl-parser))
+  (~newscope sendStatement))
+  
+(defmethod $sendStatement__Output ((self sm-dsl-parser))
+  (~output sendStatement))
+
+(defmethod $sendStatement__CoerceTo_statement ((self sm-dsl-parser))
+  (receiveOutput (output-statement (env self))
+		 (output-sendStatement (env self))))
+
+(defmethod $sendStatement__SetField_arg_from_expression ((self sm-dsl-parser))
+  (~set-field "sendStatement" "arg" expression))
+
 
 (defmethod hook-list ((p parser) &rest args)
   (format *standard-output* "~&hook: ")
@@ -242,8 +263,8 @@
     (:output-event (output-event (env self)))
     (:input-onName (input-onName (env self)))
     (:output-onName (output-onName (env self)))
-    (:input-statementsBag (input-statementsBag (env self)))
-    (:output-statementsBag (output-statementsBag (env self)))
+    (:input-statementsMap (input-statementsBag (env self)))
+    (:output-statementsMap (output-statementsBag (env self)))
     (:input-statement (input-statement (env self)))
     (:output-statement (output-statement (env self)))
     (:input-sendStatement (input-sendStatement (env self)))

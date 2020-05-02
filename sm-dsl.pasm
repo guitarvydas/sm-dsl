@@ -15,7 +15,7 @@
                                 $machineDescriptor__NewScope
    SYMBOL/machine
    @machineName                     $machineDescriptor__SetField_name_from_name
-   @optional-initially              $machineDescriptor__SetField_initiallyDescriptor_from_StatementsBag
+   @optional-initially              $machineDescriptor__SetField_initiallyDescriptor_from_StatementsMap
    @states                          $machine__SetField_states_from_StatesBag
   SYMBOL/end SYMBOL/machine
                                 $machineDescriptor__Output
@@ -23,16 +23,16 @@
 = machineName
   SYMBOL                           $symbol__GetName
 
-% << (nothing) >> statementsBag
+% << (nothing) >> statementsMap
 = optional-initially                                                                    
   [ ?SYMBOL/initially
      SYMBOL/initially
      @statements 
      SYMBOL/end SYMBOL/initially
   | * 
-     $statementsBag__NewScope $statementsBag__Output
+     $statementsMap__NewScope $statementsMap__Output
   ]
-                                $statementsBag__Output
+                                $statementsMap__Output
 
 
 % states << (nothing) >> statesBag
@@ -66,7 +66,7 @@
                                    $event__NewScope
     @eventName                       $event__SetField_name_from_name
     '_'
-    @statements                      $event__SetField_Code_from_statementsBag
+    @statements                      $event__SetField_Code_from_statementsMap
 				     $eventsBag__AppendFrom_event
                                    $event__EndScope
    | * >
@@ -79,29 +79,29 @@
                                   $symbol__GetName
 
 
-% statements << (nothing) >> statementsBag
+% statements << (nothing) >> statementsMap
 = statements
-                                $statementsBag__NewScope
+                                $statementsMap__NewScope
   {[ ?SYMBOL/send 
-     @sendStatement                $sendStatement__CoerceTo_statement $statementsBag__AppendFrom_statement
+     @sendStatement                $sendStatement__CoerceTo_statement $statementsMap__AppendFrom_statement
    | ?SYMBOL/end >
-   | ?SYMBOL @callStatement        $callStatement__CoerceTo_statement $statementsBag__AppendFrom_statement
+   | ?SYMBOL @callStatement        $callStatement__CoerceTo_statement $statementsMap__AppendFrom_statement
    | * >
   ]}
-                                $statementsBag__Output
+                                $statementsMap__Output
 
 % sendStatement << (nothing) >> statement
 = sendStatement
   SYMBOL/send
                                 $sendStatement__NewScope
-  @statemachine0Expr               $statement__SetField_arg_from_expr
+  @statemachine0Expr               $statement__SetField_arg_from_expression
                                 $sendStatement__Output
 
 % callStatement << (nothing) >> statement
 = callStatement
                                 $callStatement__NewScope
-  SYMBOL                          $symbol__GetName $statement__SetField_name_from_name
-  @optionalParameters             $statement__SetField_argsfrom_expressionMap
+  SYMBOL                          $symbol__GetName $callStatement__SetField_name_from_name
+  @optionalParameters             $callStatement__SetField_expressionMap_from_expressionMap
                                 $callStatement__Output
 
 
@@ -192,8 +192,9 @@
 
 = smtester
   ~rmSpaces
-   @callExpr
-   @callExpr
+   @statements
+   @statements
+   @statements
 
 
 

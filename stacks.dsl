@@ -1,15 +1,15 @@
 machineDescriptor = { name initiallyDescriptor statesBag pipeline }
-initiallyDescriptor = :bag statement
+initiallyDescriptor = :map statement
 statesBag = :bag state
 state = { name eventsBag }
 eventsBag = :bag event
-event = { onName statementsBag }
+event = { onName statementsMap }
 onName = :string
 
-statementsBag = :bag statement
+statementsMap = :map statement
 statement = | sendStatement | callStatement
 sendStatement = { callkind='send' expression }
-callStatement = { callkind='call' expressionMap }
+callStatement = { callkind='call' name expressionMap }
 expressionMap = :map expression
 expression = | rawExpr | dollarExpr | callExpr
 dollarExpr = { exprkind='dollar' name }
