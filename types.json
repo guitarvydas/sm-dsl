@@ -22,6 +22,7 @@
       { "kind" : "structure",
 	"fields" : [
 	    { "fieldName" : "exprkind", "fieldType" : "exprKind" },
+	    { "fieldName" : "name", "fieldType" : "name" },
 	    { "fieldName" : "expressionMap", "fieldType" : "expressionMap" }]}},
     { "name" : "callStatement",
       "descriptor" :
