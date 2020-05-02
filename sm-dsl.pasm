@@ -3,12 +3,19 @@
 
 = statemachine0
   ~rmSpaces
+                              $network__NewScope
+  @machines                       $network__SetField_machineBag_from_machineBag
+  @pipeline                       $network__SetField_pipeline_from_pipeline
+                                $network__Emit
+			      $network__EndScope
+
+= machines
+                               $machineBag__NewScope
   {[ ?SYMBOL/machine 
-       @machine
+       @machine                  $machineBag__AppendFrom_machineDescriptor
     | * >
   ]}
-  @pipeline                    $machineDescriptor__SetField_pipeline_from_pipeline
-                               $machineDescriptor__Emit
+                               $machineBag__Output
 
 - keywrd
   [ ?SYMBOL/machine ^ok
@@ -184,11 +191,13 @@
 
 % pipeline >> pipeline
 = pipeline
+    SYMBOL/pipeline
                               $pipeline__NewScope
     SYMBOL                       $symbol__GetName $pipeline__AppendFrom_name
-    @morePipes                   $pipeline__AppendFrom_pipeline
+    @morePipes
                               $pipeline__Output
-
+    SYMBOL/end SYMBOL/pipeline
+    
 % morePipes <<>> pipeline
 = morePipes
   {[?'|' 
@@ -203,8 +212,7 @@
 
 = smtester
   ~rmSpaces
-   @sendStatement
-   @sendStatement
+   @machine
 
 
 

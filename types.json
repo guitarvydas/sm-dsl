@@ -48,6 +48,11 @@
 		    {"fieldName" : "initiallyDescriptor", "fieldType" : "initiallyDescriptor"},
 		    {"fieldName" : "statesBag", "fieldType" : "statesBag"},
 		    {"fieldName" : "pipeline", "fieldType" : "pipeline"}]}},
+    { "name" : "network",
+      "descriptor" :
+      { "kind" : "structure",
+	"fields" : [{"fieldName" : "machineBag", "fieldType" : "machineBag"},
+		    {"fieldName" : "pipeline", "fieldType" : "pipeline"}]}},
     { "name" : "state",
       "descriptor" :
       { "kind" : "structure",
@@ -69,6 +74,9 @@
     { "name" : "pipeline",
       "descriptor" :
       { "kind" : "map", "elementType" : "name" }},
+    { "name" : "machineBag",
+      "descriptor" :
+      { "kind" : "map", "elementType" : "machineDescriptor" }},
     { "name" : "statementsMap",
       "descriptor" :
       { "kind" : "bag", "elementType" : "statement" }},

@@ -1,4 +1,6 @@
-machineDescriptor = { name initiallyDescriptor statesBag pipeline }
+network = { machineBag pipeline }
+machineBag = :bag machineDescriptor
+machineDescriptor = { name initiallyDescriptor statesBag }
 initiallyDescriptor = :map statement
 statesBag = :bag state
 state = { name eventsBag }

@@ -8,7 +8,7 @@
       (let ((tokens (scanner:scanner in-string)))
 	(let ((p (make-instance 'sm-dsl-parser)))
 	  (initially p tokens)
-	  (smtester p) ;; call top rule
+	  (statemachine0 p) ;; call top rule
 	  (let ((result-string (get-output-stream-string (pasm:output-string-stream p))))
 	    (with-open-file (f outfile-name :direction :output :if-exists :supersede :if-does-not-exist :create)
 	      (write-string result-string f))

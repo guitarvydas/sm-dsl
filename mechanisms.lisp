@@ -8,6 +8,40 @@
     (stack-dsl::%push to-stack val)
     (stack-dsl::%pop from-stack)))
 
+;; network
+(defmethod $network__NewScope ((self sm-dsl-parser))
+  (~newscope network))
+
+(defmethod $network__EndScope ((self sm-dsl-parser))
+  (stack-dsl::%pop (input-network (env self))))
+
+(defmethod $network__SetField_machineBag_from_machineBag ((self sm-dsl-parser))
+  (~set-field "network" "machineBag" machineBag))
+
+(defmethod $network__SetField_pipeline_from_pipeline ((self sm-dsl-parser))
+  (~set-field "network" "pipeline" pipeline))
+
+(defmethod $network__Emit ((self sm-dsl-parser))
+  (let ((net (stack-dsl::%top (input-network (env self)))))
+    (let ((machine-list (stack-dsl::lis (machineBag net)))
+	  (pipeline     (stack-dsl::ordered-list (pipeline net))))
+      (dolist (m machine-list)
+	(pasm:emit-string self "~&machine ~a~%" (stack-dsl::%value (name m))))
+      (emit-string self "(pipeline ")
+      (dolist (p pipeline)
+	(emit-string self "'~a " (stack-dsl::%value p)))
+      (emit-string self ")~%"))))
+  
+;; machineBag
+(defmethod $machineBag__NewScope ((self sm-dsl-parser))
+  (~newscope machineBag))
+
+(defmethod $machineBag__Output ((self sm-dsl-parser))
+  (~output machineBag))
+
+(defmethod $machineBag__AppendFrom_machineDescriptor ((self sm-dsl-parser))
+  (~append machineBag machineDescriptor))
+
 ;; machineDescriptor
 (defmethod $machineDescriptor__NewScope ((self sm-dsl-parser))
   (~newscope machineDescriptor))
@@ -27,10 +61,6 @@
 (defmethod $machineDescriptor__Output ((self sm-dsl-parser))
   (~output machineDescriptor))
 
-(defmethod $machineDescriptor__emit ((self sm-dsl-parser))
-  (let ((mdo (stack-dsl::%top (output-machineDescriptor (env self)))))
-    (pasm:emit-string self "~&mdo=~s~%" mdo)
-    (pasm:emit-string self "~&mdo.name.value=~s~%" (stack-dsl:%value (name mdo)))))
 
 
 ;; statementsMap
