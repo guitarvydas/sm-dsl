@@ -210,7 +210,7 @@
 (defmethod $callStatement__Output ((self sm-dsl-parser))
   (~output callStatement))
 
-(defmethod $callStatement__CoerceTo_statement ((self sm-dsl-parser))
+(defmethod $callStatement__CoercePushTo_statement ((self sm-dsl-parser))
   (receiveOutput (output-statement (env self))
 	      (output-callStatement (env self))))
 
@@ -227,7 +227,7 @@
 (defmethod $sendStatement__Output ((self sm-dsl-parser))
   (~output sendStatement))
 
-(defmethod $sendStatement__CoerceTo_statement ((self sm-dsl-parser))
+(defmethod $sendStatement__CoercePushTo_statement ((self sm-dsl-parser))
   (receiveOutput (output-statement (env self))
 		 (output-sendStatement (env self))))
 
