@@ -38,7 +38,7 @@
     { "name" : "event",
       "descriptor" :
       { "kind" : "structure",
-	"fields" : [{"fieldName" : "onName", "fieldType" : "onName"},
+	"fields" : [{"fieldName" : "name", "fieldType" : "name"},
 		    {"fieldName" : "statementsMap", "fieldType" : "statementsMap"}]}},
     { "name" : "machineDescriptor",
       "descriptor" :

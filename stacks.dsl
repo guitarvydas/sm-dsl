@@ -3,7 +3,7 @@ initiallyDescriptor = :map statement
 statesBag = :bag state
 state = { name eventsBag }
 eventsBag = :bag event
-event = { onName statementsMap }
+event = { name statementsMap }
 onName = :string
 
 statementsMap = :map statement

@@ -15,7 +15,7 @@
                                 $machineDescriptor__NewScope
    SYMBOL/machine
    @machineName                     $machineDescriptor__SetField_name_from_name
-   @optional-initially              $machineDescriptor__SetField_initiallyDescriptor_from_StatementsMap
+   @optionalInitially              $machineDescriptor__SetField_initiallyDescriptor_from_StatementsMap
    @states                          $machine__SetField_states_from_StatesBag
   SYMBOL/end SYMBOL/machine
                                 $machineDescriptor__Output
@@ -24,7 +24,7 @@
   SYMBOL                           $symbol__GetName
 
 % << (nothing) >> statementsMap
-= optional-initially                                                                    
+= optionalInitially                                                                    
   [ ?SYMBOL/initially
      SYMBOL/initially
      @statements 
@@ -32,7 +32,6 @@
   | * 
      $statementsMap__NewScope $statementsMap__Output
   ]
-                                $statementsMap__Output
 
 
 % states << (nothing) >> statesBag
@@ -58,17 +57,17 @@
     SYMBOL 
                                   $symbol__GetName
 
-% event << (nothing) >> eventsBag
+% events << (nothing) >> eventsBag
 = events
                                $eventsBag__NewScope
   {[ ?SYMBOL/on 
     SYMBOL/on
                                    $event__NewScope
     @eventName                       $event__SetField_name_from_name
-    '_'
-    @statements                      $event__SetField_Code_from_statementsMap
+    ':'
+    @statements                      $event__SetField_statementsMap_from_statementsMap
+                                     $event__Output
 				     $eventsBag__AppendFrom_event
-                                   $event__EndScope
    | * >
   ]}
                                 $eventsBag__Output
@@ -83,9 +82,9 @@
 = statements
                                 $statementsMap__NewScope
   {[ ?SYMBOL/send 
-     @sendStatement                $sendStatement__CoerceTo_statement $statementsMap__AppendFrom_statement
+     @sendStatement                $sendStatement__CoercePushTo_statement $statementsMap__AppendFrom_statement
    | ?SYMBOL/end >
-   | ?SYMBOL @callStatement        $callStatement__CoerceTo_statement $statementsMap__AppendFrom_statement
+   | ?SYMBOL @callStatement        $callStatement__CoercePushTo_statement $statementsMap__AppendFrom_statement
    | * >
   ]}
                                 $statementsMap__Output
@@ -192,9 +191,7 @@
 
 = smtester
   ~rmSpaces
-   @statements
-   @statements
-   @statements
+   @events
 
 
 

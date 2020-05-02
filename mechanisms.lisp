@@ -90,8 +90,11 @@
 (defmethod $event__Output ((self sm-dsl-parser))
   (~output event))
 
-(defmethod $event__SetField_code_from_statementsMap ((self sm-dsl-parser))
-  (~set-field "event" "code" statementsMap))
+(defmethod $event__SetField_name_from_name ((self sm-dsl-parser))
+  (~set-field "event" "name" name))
+
+(defmethod $event__SetField_statementsMap_from_statementsMap ((self sm-dsl-parser))
+  (~set-field "event" "statementsMap" statementsMap))
 
 ;; expressionMap
 (defmethod $expressionMap__NewScope ((self sm-dsl-parser))
