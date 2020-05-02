@@ -50,12 +50,21 @@
 (defmethod $statesBag__Output ((self sm-dsl-parser))
   (~output statesBag))
 
+(defmethod $statesBag__AppendFrom_state ((self sm-dsl-parser))
+  (~append statesBag state))
+
 ;; state
-(defmethod state__NewScope ((self sm-dsl-parser))
+(defmethod $state__NewScope ((self sm-dsl-parser))
   (~newscope state))
 
-(defmethod state__Output ((self sm-dsl-parser))
+(defmethod $state__Output ((self sm-dsl-parser))
   (~output state))
+
+(defmethod $state__SetField_name_from_name ((self sm-dsl-parser))
+  (~set-field "state" "name" name))
+
+(defmethod $state__SetField_eventsBag_from_eventsBag ((self sm-dsl-parser))
+  (~set-field "state" "eventsBag" eventsBag))
 
 ;; statement
 (defmethod $statement__NewScope ((self sm-dsl-parser))

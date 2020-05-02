@@ -48,8 +48,8 @@
   SYMBOL/state
                                 $state__NewScope
     @stateName                    $state__SetField_name_from_name
-    '_'
-    @events                       $state__SetField_events_from_eventsBag
+    ':'
+    @events                       $state__SetField_eventsBag_from_eventsBag
                                 $state__Output
 
 % stateName << (nothing) >> name
@@ -191,7 +191,7 @@
 
 = smtester
   ~rmSpaces
-   @events
+   @states
 
 
 
