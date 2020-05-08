@@ -13,13 +13,6 @@
 				     (:file "generate-stacks" 
 					    :depends-on ("stacks.pasm"))))))
 
-(defsystem :sm-dsl/generate-test
-  :depends-on (:sm-dsl)
-  :components ((:module "source"
-                        :pathname "./"
-                        :components ((:static-file "test-mech.pasm")
-				     (:file "generate-test" 
-					    :depends-on ("test-mech.pasm"))))))
 ;; see README.org for test-mech
 
 (defsystem :sm-dsl/generate
