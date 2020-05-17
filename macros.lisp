@@ -24,7 +24,7 @@
 ;; newscope(type) : push <nothing-ness> onto input stack of type
 ;; replace-top(x,y) : replace top x item with y
 ;; append(x,y) : append y to top x
-;; pop-ouput(x) : kill top x item
+;; pop-output(x) : kill top x item
 ;; set-field (x f val) : assign val to x.f
 
 ;; loosey-goosey semantics...
@@ -33,7 +33,7 @@
 ;; newscope(type) : push <nothing-ness> onto input stack of type
 ;; replace-top(x,y) : replace top x item with y ; set top(x) to be top(y) (replace, not push), pop top(y), check that replacement type is the same as the replacee
 ;; append(x,y) : append y to top x ; append top(y) to top(x), check that type of top(y) is append-able to top(x)
-;; pop-ouput(x) : kill top x item ; return top(x), pop x
+;; pop-output(x) : kill top x item ; return top(x), pop x
 ;; set-field (x f val) : top(x).f <- val where top(x) must have field f, val must be of type compatible with type top(x).f
 
 
